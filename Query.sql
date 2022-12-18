@@ -1,4 +1,8 @@
-select r.ocid, data['compiledRelease']['id'] as "id", data['compiledRelease']['tender']['id'] as "tender_id",data['compiledRelease']['tender']['title'] as "tender.title",
+select 
+	r.ocid,
+	data['compiledRelease']['id'] as "id",
+	data['compiledRelease']['tender']['id'] as "tender_id",
+	data['compiledRelease']['tender']['title'] as "tender.title",
 	data['compiledRelease']['tender']['status'] as "tender.status",
 	data['compiledRelease']['tender']['awardCriteria'] as "tender.awardCriteria",
 	data['compiledRelease']['tender']['awardCriteriaDetails'] as "tender.awardCriteriaDetails",
@@ -22,7 +26,6 @@ select r.ocid, data['compiledRelease']['id'] as "id", data['compiledRelease']['t
 	data['compiledRelease']['tender']['enquiryPeriod']['startDate'] as "tender.enquiryPeriod.startDate",
 	data['compiledRelease']['tender']['enquiryPeriod']['durationInDays'] as "tender.enquiryPeriod.durationInDays",
 	data['compiledRelease']['tender']['mainProcurementCategory'] as "tender.mainProcurementCategory",	
-	data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories",	 
 	data['compiledRelease']['tender']['procurementMethod'] as "tender.procurementMethod",
 	data['compiledRelease']['tender']['procurementMethodDetails'] as "tender.procurementMethodDetails",	
 	data['compiledRelease']['tender']['procuringEntity']['id'] as "tender.procuringEntity.id",
@@ -39,7 +42,6 @@ select r.ocid, data['compiledRelease']['id'] as "id", data['compiledRelease']['t
 	data['compiledRelease']['planning']['budget']['description'] as "planning.budget.description",
 	data['compiledRelease']['planning']['budget']['amount']['currency'] as "planning.budget.amount.currency",
 	data['compiledRelease']['planning']['budget']['amount']['amount'] as "planning.budget.amount.amount",
-	data['compiledRelease']['planning']['budget']['budgetBreakdown'] as "planning.budget.budgetBreakdown", 
 	data['compiledRelease']['tag'] as "tag",
 	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy",
 	data['compiledRelease']['tender']['techniques']['hasElectronicAuction'] as "tender.techniques.hasElectronicAuction",
@@ -62,15 +64,29 @@ select r.ocid, data['compiledRelease']['id'] as "id", data['compiledRelease']['t
 	data['compiledRelease']['tender']['techniques']['hasFrameworkAgreement'] as "tender.techniques.hasFrameworkAgreement",
 	data['compiledRelease']['tender']['contractPeriod']['startDate'] as "tender.contractPeriod.startDate",
 	data['compiledRelease']['tender']['contractPeriod']['endDate'] as "tender.contractPeriod.endDate",
-	data['compiledRelease']['tender']['lots'] as "tender.lots", 
-	data['compiledRelease']['tender']['items'] as "tender.items", 
-	data['compiledRelease']['tender']['criteria'] as "tender.criteria",
-	data['compiledRelease']['tender']['documents'] as "tender.documents",
-	data['compiledRelease']['tender']['tenderers'] as "tender.tenderers",
-	data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers",
-	data['compiledRelease']['awards'] as "tender.awards",
-	data['compiledRelease']['parties'] as "tender.parties",
-	data['compiledRelease']['sources'] as "tender.sources",
-	data['compiledRelease']['contracts'] as "tender.contracts"
+	data['compiledRelease']['planning']['budget']['budgetBreakdown'] as "planning.budget.budgetBreakdown", -- IS AN ARRAY
+	data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories", --IS AN ARRAY
+	data['compiledRelease']['tender']['lots'] as "tender.lots", --IS AN ARRAY
+	data['compiledRelease']['tender']['items'] as "tender.items", --IS AN ARRAY
+	data['compiledRelease']['tender']['criteria'] as "tender.criteria", --IS AN ARRAY
+	data['compiledRelease']['tender']['documents'] as "tender.documents", --IS AN ARRAY FLATTENIZADO 2.1
+	data['compiledRelease']['tender']['tenderers'] as "tender.tenderers", --IS AN ARRAY
+	data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers", --IS AN ARRAY
+	data['compiledRelease']['awards'] as "awards", --IS AN ARRAY
+	data['compiledRelease']['parties'] as "parties", --IS AN ARRAY
+	data['compiledRelease']['sources'] as "sources", --IS AN ARRAY
+	data['compiledRelease']['contracts'] as "contracts", --IS AN ARRAY
+	data['compiledRelease']['complaints'] as "complaints", --IS AN ARRAY
+
+	-- FLATENIZACION 
+		-- COMPLAINTS: 1
+			CASE WHEN data['compiledRelease']['complaints'] IS NULL THEN 'No' ELSE 'Yes' END AS "has_complaints",
+
+		-- TENDER: 2
+		-- DOCUMENTS: 2.1
+			data['compiledRelease']['tender']['documents']
+
+
+
 FROM RECORD r join data d on d.id = r.data_id 
-where r.ocid = 'ocds-03ad3f-414539-1'
+LIMIT 10
