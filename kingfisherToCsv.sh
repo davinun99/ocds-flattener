@@ -1,7 +1,7 @@
 #!/bin/bash
 source progress_bar.sh
 
-filePath="/Users/davidnunez/Desktop/tesis/KingFisherToCSV/2015-2016.csv"
+filePath="/Users/davidnunez/Desktop/tesis/KingFisherToCSV/test.csv"
 touch $filePath
 function progress () {
 	current_task=$(wc -l $filePath | awk '{print $1}') 
