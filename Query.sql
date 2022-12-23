@@ -64,29 +64,19 @@ select
 	data['compiledRelease']['tender']['techniques']['hasFrameworkAgreement'] as "tender.techniques.hasFrameworkAgreement",
 	data['compiledRelease']['tender']['contractPeriod']['startDate'] as "tender.contractPeriod.startDate",
 	data['compiledRelease']['tender']['contractPeriod']['endDate'] as "tender.contractPeriod.endDate",
-	data['compiledRelease']['planning']['budget']['budgetBreakdown'] as "planning.budget.budgetBreakdown", -- IS AN ARRAY
-	data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories", --IS AN ARRAY
-	data['compiledRelease']['tender']['lots'] as "tender.lots", --IS AN ARRAY
-	data['compiledRelease']['tender']['items'] as "tender.items", --IS AN ARRAY
-	data['compiledRelease']['tender']['criteria'] as "tender.criteria", --IS AN ARRAY
-	data['compiledRelease']['tender']['documents'] as "tender.documents", --IS AN ARRAY FLATTENIZADO 2.1
-	data['compiledRelease']['tender']['tenderers'] as "tender.tenderers", --IS AN ARRAY
-	data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers", --IS AN ARRAY
-	data['compiledRelease']['awards'] as "awards", --IS AN ARRAY
-	data['compiledRelease']['parties'] as "parties", --IS AN ARRAY
-	data['compiledRelease']['sources'] as "sources", --IS AN ARRAY
-	data['compiledRelease']['contracts'] as "contracts", --IS AN ARRAY
-	data['compiledRelease']['complaints'] as "complaints", --IS AN ARRAY
-
-	-- FLATENIZACION 
-		-- COMPLAINTS: 1
-			CASE WHEN data['compiledRelease']['complaints'] IS NULL THEN 'No' ELSE 'Yes' END AS "has_complaints",
-
-		-- TENDER: 2
-		-- DOCUMENTS: 2.1
-			data['compiledRelease']['tender']['documents']
-
-
-
+	-- data['compiledRelease']['planning']['budget']['budgetBreakdown'] as "planning.budget.budgetBreakdown", -- IS AN ARRAY
+	-- data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories", --IS AN ARRAY
+	-- data['compiledRelease']['tender']['lots'] as "tender.lots", --IS AN ARRAY
+	-- data['compiledRelease']['tender']['items'] as "tender.items", --IS AN ARRAY
+	-- data['compiledRelease']['tender']['criteria'] as "tender.criteria", --IS AN ARRAY
+	-- data['compiledRelease']['tender']['documents'] as "tender.documents", --IS AN ARRAY FLATTENIZADO 2.1
+	-- data['compiledRelease']['tender']['tenderers'] as "tender.tenderers", --IS AN ARRAY
+	-- data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers", --IS AN ARRAY
+	-- data['compiledRelease']['awards'] as "awards", --IS AN ARRAY
+	-- data['compiledRelease']['parties'] as "parties", --IS AN ARRAY
+	-- data['compiledRelease']['sources'] as "sources", --IS AN ARRAY
+	-- data['compiledRelease']['contracts'] as "contracts", --IS AN ARRAY
+	-- data['compiledRelease']['complaints'] as "complaints", --IS AN ARRAY
+	jsonb_array_length(data['compiledRelease']['parties']::jsonb) as "parties.count"
 FROM RECORD r join data d on d.id = r.data_id 
 LIMIT 10
