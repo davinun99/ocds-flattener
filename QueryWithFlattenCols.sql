@@ -63,30 +63,7 @@ select
 	data['compiledRelease']['tender']['techniques']['hasFrameworkAgreement'] as "tender.techniques.hasFrameworkAgreement",
 	data['compiledRelease']['tender']['contractPeriod']['startDate'] as "tender.contractPeriod.startDate",
 	data['compiledRelease']['tender']['contractPeriod']['endDate'] as "tender.contractPeriod.endDate",
-	data['compiledRelease']['parties'] as "parties", --IS AN ARRAY
-	data['compiledRelease']['planning'] as "planning", --IS AN ARRAY
-	data['compiledRelease']['tender']['items'] as "tender.items", --IS AN ARRAY
-	data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories", --IS AN ARRAY
-	data['compiledRelease']['tender']['submissionMethod'] as "tender.submissionMethod",
-	data['compiledRelease']['tender']['tenderers'] as "tender.tenderers", --IS AN ARRAY
-	data['compiledRelease']['tender']['documents'] as "tender.documents", --IS AN ARRAY FLATTENIZADO 2.1
-	data['compiledRelease']['tender']['amendments'] as "tender.amendments", --IS AN ARRAY
-	data['compiledRelease']['tender']['lots'] as "tender.lots", --IS AN ARRAY
-	data['compiledRelease']['tender']['enquiries'] as "tender.enquiries", --IS AN ARRAY
-	data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers", --IS AN ARRAY
-	data['compiledRelease']['tender']['criteria'] as "tender.criteria", --IS AN ARRAY
-	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --IS AN ARRAY
-	data['compiledRelease']['tender']['participationFees'] as "tender.participationFees", --IS AN ARRAY
-	data['compiledRelease']['awards'] as "awards", --IS AN ARRAY
-	data['compiledRelease']['contracts'] as "contracts", --IS AN ARRAY
-	data['compiledRelease']['relatedProcesses'] as "relatedProcesses", --IS AN ARRAY
-	data['compiledRelease']['sources'] as "sources", --IS AN ARRAY
-	data['compiledRelease']['complaints'] as "complaints", --IS AN ARRAY
-	data['compiledRelease']['bids'] as "bids", --IS AN ARRAY
-	data['compiledRelease']['auctions'] as "auctions", --IS AN ARRAY
-	data['compiledRelease']['secondStage']['candidates'] as "secondStage.candidates",
-	data['compiledRelease']['secondStage']['invitations'] as "secondStage.invitations",
-	data['compiledRelease']['secondStage']['documents'] as "secondStage.documents",
-	jsonb_array_length(data['compiledRelease']['parties']::jsonb) as "parties.count"
-	-- data['compiledRelease']['planning']['budget']['budgetBreakdown'] as "planning.budget.budgetBreakdown", -- IS AN ARRAY
+	(select STRING_AGG ( d['id']::text, '||' ) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.id.concat",
+	(select string_agg(d['details']['legalEntityTypeDetail']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.legalEntityTypeDetail.concat",
+	(select string_agg(d['details']['entityType']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.entityType.concat",
 FROM RECORD r join data d on d.id = r.data_id 
