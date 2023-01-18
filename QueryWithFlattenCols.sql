@@ -66,4 +66,13 @@ select
 	(select STRING_AGG ( d['id']::text, '||' ) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.id.concat",
 	(select string_agg(d['details']['legalEntityTypeDetail']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.legalEntityTypeDetail.concat",
 	(select string_agg(d['details']['entityType']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.entityType.concat",
+	(select string_agg(d['name']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.name.concat",
+	(select string_agg(d['roles']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.roles.concat",
+	(select string_agg(d['classification']['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['planning']['items']) d) as "planning.items.classification.id.concat",
+	(select string_agg(d['classification']['description']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['items']) d) as "tender.items.classification.description.concat",
+	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['additionalProcurementCategories']) d) as "tender.additionalProcurementCategories.concat",
+	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['submissionMethod']) d) as "tender.submissionMethod.concat",
+	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['tenderers']) d) as "tender.tenderers.id.concat",
+	(select string_agg(d['documentTypeDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['documents']) d) as "tender.documents.documentTypeDetails.concat"
 FROM RECORD r join data d on d.id = r.data_id 
+LIMIT 50
