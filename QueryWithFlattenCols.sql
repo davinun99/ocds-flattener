@@ -94,5 +94,9 @@ select
 	(select string_agg(d['status']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.status.concat",
 	(select string_agg(d['statusDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.statusDetails.concat"
 	-- FALTA LOGICA contracts.value.amount
+	-- contracts.documents.DocumentTypeDetails
+	-- contracts.implementation.transactions
+	-- contracts.implementation.documents.DocumentTypeDetails
+	-- contracts.implementation.purchaseOrders
 FROM RECORD r join data d on d.id = r.data_id 
 LIMIT 50
