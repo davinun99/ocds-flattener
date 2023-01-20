@@ -73,6 +73,26 @@ select
 	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['additionalProcurementCategories']) d) as "tender.additionalProcurementCategories.concat",
 	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['submissionMethod']) d) as "tender.submissionMethod.concat",
 	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['tenderers']) d) as "tender.tenderers.id.concat",
-	(select string_agg(d['documentTypeDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['documents']) d) as "tender.documents.documentTypeDetails.concat"
+	(select string_agg(d['documentTypeDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['documents']) d) as "tender.documents.documentTypeDetails.concat",
+	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['lots']), 0) as "tender.lots.count",
+	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['enquiries']), 0) as "tender.enquiries.count",
+	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['notifiedSuppliers']) d) as "tender.notifiedSuppliers.id.concat",
+	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['criteria']) d) as "tender.criteria.id.concat",
+	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['coveredBy']) d) as "tender.coveredBy.concat",
+	COALESCE(jsonb_array_length(data['compiledRelease']['awards']), 0) as "awards.count",
+	(select string_agg(d['status']::text, '||') from jsonb_array_elements(data['compiledRelease']['awards']) d) as "awards.status.concat",
+	(select string_agg(d['statusDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['awards']) d) as "awards.statusDetails.concat",
+	--FALTA LOGICA awards.value.amount
+	--FALTA awards.items.classification.description
+	--FALTA awards.suppliers.id
+	--FALTA awards.documents.DocumentTypeDetails
+	-- 	awards.amendments
+	-- awards.relatedLots
+	-- awards.requirementResponses
+	-- awards.relatedBids
+	COALESCE(jsonb_array_length(data['compiledRelease']['contracts']), 0) as "contracts.count",
+	(select string_agg(d['status']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.status.concat",
+	(select string_agg(d['statusDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.statusDetails.concat"
+	-- FALTA LOGICA contracts.value.amount
 FROM RECORD r join data d on d.id = r.data_id 
 LIMIT 50
