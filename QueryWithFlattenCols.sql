@@ -66,6 +66,7 @@ select
 	(select STRING_AGG ( d['id']::text, '||' ) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.id.concat",
 	(select string_agg(d['details']['legalEntityTypeDetail']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.legalEntityTypeDetail.concat",
 	(select string_agg(d['details']['entityType']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.entityType.concat",
+	(select array_to_json(ARRAY_AGG(d->'memberOf'->0->'id')) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.memberOf.id.concat", --ARRAY LIKE, USING JUST [0] of memberOf
 	(select string_agg(d['name']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.name.concat",
 	(select string_agg(d['roles']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.roles.concat",
 	(select string_agg(d['classification']['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['planning']['items']) d) as "planning.items.classification.id.concat",
