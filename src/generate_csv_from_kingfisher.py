@@ -4,9 +4,28 @@ import helpers
 import sys
 
 con = None
-BATCH_SIZE = 100
+BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
-
+guarantee_type_map = {
+	"fulfillment": 0,
+	"Endoso - Fiel Cumplimiento": 1,
+	"Endoso - Anticipo": 2,
+	"Accidentes Personales": 3,
+	"Todo Riesgos en Zona de Obras": 4,
+	"Anticipo": 5,
+	"Responsabilidad Civil General": 6,
+	'Endoso - Accidentes Personales': 7,
+	"Daños a Terceros": 8,
+	"Responsabilidad Profesional": 9,
+	"Endoso - Todo Riesgos en Zona de Obras": 10,
+	"Endoso - Responsabilidad Civil General": 11,
+	"Fondo de Reparo": 12,
+	"Deshonestidad": 13,
+	"Endoso - Daños a Terceros": 14,
+	"Endoso - Responsabilidad Profesional": 15,
+	"Endoso - Deshonestidad": 16,
+	"Endoso - Fondo de Reparo": 17,
+}
 try:
 	con = psycopg2.connect(
 		host = settings.dbHost, 
@@ -22,55 +41,54 @@ except Exception as ex:
 	exit()
 
 def process_row (row: tuple) -> tuple:
-	# 65 data['compiledRelease']['parties'] as "parties", --IS AN ARRAY
-	# 66 data['compiledRelease']['planning'] as "planning", --IS AN ARRAY
-	# 67 data['compiledRelease']['tender']['items'] as "tender.items", --IS AN ARRAY
-	# 68 data['compiledRelease']['tender']['additionalProcurementCategories'] as "tender.additionalProcurementCategories", --IS AN ARRAY
-	# 69 data['compiledRelease']['tender']['submissionMethod'] as "tender.submissionMethod",
-	# 70 data['compiledRelease']['tender']['tenderers'] as "tender.tenderers", --IS AN ARRAY
-	# 71 data['compiledRelease']['tender']['documents'] as "tender.documents", --IS AN ARRAY FLATTENIZADO 2.1
-	# 72 data['compiledRelease']['tender']['amendments'] as "tender.amendments", --IS AN ARRAY
-	# 73 data['compiledRelease']['tender']['lots'] as "tender.lots", --IS AN ARRAY
-	# 74 data['compiledRelease']['tender']['enquiries'] as "tender.enquiries", --IS AN ARRAY
-	# 75 data['compiledRelease']['tender']['notifiedSuppliers'] as "tender.notifiedSuppliers", --IS AN ARRAY
-	# 76 data['compiledRelease']['tender']['criteria'] as "tender.criteria", --IS AN ARRAY
-	# 77 data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --IS AN ARRAY
-	# 78 data['compiledRelease']['tender']['participationFees'] as "tender.participationFees", --IS AN ARRAY
-	# 79 data['compiledRelease']['awards'] as "awards", --IS AN ARRAY
-	# 80 data['compiledRelease']['contracts'] as "contracts", --IS AN ARRAY
-	# 81 data['compiledRelease']['relatedProcesses'] as "relatedProcesses", --IS AN ARRAY
-	# 82 data['compiledRelease']['sources'] as "sources", --IS AN ARRAY
-	# 83 data['compiledRelease']['complaints'] as "complaints", --IS AN ARRAY
-	# 84 data['compiledRelease']['bids'] as "bids", --IS AN ARRAY
-	# 85 data['compiledRelease']['auctions'] as "auctions", --IS AN ARRAY
-	# 86 data['compiledRelease']['secondStage']['candidates'] as "secondStage.candidates",
-	# 87 data['compiledRelease']['secondStage']['invitations'] as "secondStage.invitations",
-	# 88 data['compiledRelease']['secondStage']['documents'] as "secondStage.documents",
-	return None
+	countArr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	if row[1]:
+		for contract in row[1]:
+			if('guarantees' in contract):
+				for guarantee in contract['guarantees']:
+					ind = guarantee_type_map[guarantee['obligations']]
+					countArr[ind] += 1
+	return (row[0], countArr)
 
 
-def generate_csv (record_count: int) -> None:
+def generate_csv_batch(record_count: int) -> None:
 	query = helpers.read_query_from_file(QUERY_FILE_PATH) + " ORDER BY r.ocid ASC LIMIT {0} OFFSET {1}"
 	records_processed = 0
 	offset = 0
 	query = query.format(BATCH_SIZE, offset)
 	cursor = con.cursor()
 	while records_processed < record_count:
-		cursor.execute(query)
+		print('init', query, offset)
+		cursor.execute(query.format(BATCH_SIZE, offset))
 		rows = cursor.fetchall()
+		print(rows[0])
 		records_processed += len(rows)
-		print(records_processed)
+		# print(records_processed)
 		offset += BATCH_SIZE
-		query = query.format(BATCH_SIZE, offset)
+		# print('end', query, offset)
 	print(records_processed)
+
+def get_rows() -> list[tuple]:
+	query = helpers.read_query_from_file(QUERY_FILE_PATH)
+	cursor = con.cursor()
+	cursor.execute(query)
+	rows = cursor.fetchall()
+	return rows
 
 def main(arguments):
 	cursor = con.cursor()
 	cursor.execute('''SELECT count(*) FROM data;''')
 	record_count_row = cursor.fetchone()
-	record_count = record_count_row[0]
+	
+	record_count = 0
+	if record_count_row:
+		record_count = record_count_row[0]
+	
 	print(f'\n{record_count} records found\n')
-	generate_csv(record_count)
+	for row in get_rows():
+		idArr = process_row(row)
+		print(idArr)
+	# print(rows[0])
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
