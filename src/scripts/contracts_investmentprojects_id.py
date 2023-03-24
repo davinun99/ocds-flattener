@@ -165,7 +165,6 @@ def process_row (row: tuple) -> tuple:
 		for contract in row[1]:
 			if('investmentProjects' in contract):
 				for investmentProject in contract['investmentProjects']:
-					print(investmentProject['id'])
 					ind = map[investmentProject['id']]
 					countArr[ind] += 1
 	return (row[0], countArr)
