@@ -1,6 +1,5 @@
 import sys
 sys.path.append('./src')
-import settings
 import helpers
 BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
