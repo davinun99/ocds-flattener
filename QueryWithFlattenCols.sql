@@ -63,26 +63,9 @@ select
 	data['compiledRelease']['tender']['techniques']['hasFrameworkAgreement'] as "tender.techniques.hasFrameworkAgreement",
 	data['compiledRelease']['tender']['contractPeriod']['startDate'] as "tender.contractPeriod.startDate",
 	data['compiledRelease']['tender']['contractPeriod']['endDate'] as "tender.contractPeriod.endDate",
-	(select STRING_AGG ( d['id']::text, '||' ) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.id.concat",
-	(select string_agg(d['details']['legalEntityTypeDetail']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.legalEntityTypeDetail.concat",
-	(select string_agg(d['details']['entityType']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.details.entityType.concat",
-	(select array_to_json(ARRAY_AGG(d->'memberOf'->0->'id')) from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.memberOf.id.concat", --ARRAY LIKE, USING JUST [0] of memberOf
-	(select string_agg(d['name']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.name.concat",
-	(select string_agg(d['roles']::text, '||') from jsonb_array_elements(data['compiledRelease']['parties']) d) as "parties.roles.concat",
-	(select string_agg(d['classification']['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['planning']['items']) d) as "planning.items.classification.id.concat",
-	(select string_agg(d['classification']['description']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['items']) d) as "tender.items.classification.description.concat",
-	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['additionalProcurementCategories']) d) as "tender.additionalProcurementCategories.concat",
-	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['submissionMethod']) d) as "tender.submissionMethod.concat",
-	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['tenderers']) d) as "tender.tenderers.id.concat",
-	(select string_agg(d['documentTypeDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['documents']) d) as "tender.documents.documentTypeDetails.concat",
 	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['lots']), 0) as "tender.lots.count",
 	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['enquiries']), 0) as "tender.enquiries.count",
-	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['notifiedSuppliers']) d) as "tender.notifiedSuppliers.id.concat",
-	(select string_agg(d['id']::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['criteria']) d) as "tender.criteria.id.concat",
-	(select string_agg(d::text, '||') from jsonb_array_elements(data['compiledRelease']['tender']['coveredBy']) d) as "tender.coveredBy.concat",
 	COALESCE(jsonb_array_length(data['compiledRelease']['awards']), 0) as "awards.count",
-	(select string_agg(d['status']::text, '||') from jsonb_array_elements(data['compiledRelease']['awards']) d) as "awards.status.concat",
-	(select string_agg(d['statusDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['awards']) d) as "awards.statusDetails.concat",
 	--FALTA LOGICA awards.value.amount
 	--FALTA awards.items.classification.description
 	--FALTA awards.suppliers.id
@@ -92,8 +75,6 @@ select
 	-- awards.requirementResponses
 	-- awards.relatedBids
 	COALESCE(jsonb_array_length(data['compiledRelease']['contracts']), 0) as "contracts.count",
-	(select string_agg(d['status']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.status.concat",
-	(select string_agg(d['statusDetails']::text, '||') from jsonb_array_elements(data['compiledRelease']['contracts']) d) as "contracts.statusDetails.concat"
 	-- FALTA LOGICA contracts.value.amount
 	-- contracts.documents.DocumentTypeDetails
 	-- contracts.implementation.transactions
