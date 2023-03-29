@@ -10,6 +10,10 @@ COUNT_MAP_FILENAME = 'saved_count_map.pkl'
 count_map = {}
 index_map = {}
 
+first_quantile: dict = {}
+second_quantile = {}
+third_quantile = {}	
+
 def load_count_map(row: tuple) -> int:
 	count = 0
 	if row[1]:
@@ -25,32 +29,40 @@ def load_count_map(row: tuple) -> int:
 	return count
 
 
-def get_count_map(rows: list) -> dict:
-	try: # try to load saved count map
-		print('Trying to load saved count map')
-		with open(COUNT_MAP_FILENAME, 'rb') as f:
-			count_map = pickle.load(f)
-			print('Loaded saved count map')
-			return count_map
-	except:
-		count_map: dict = {}
-		total_count: int = 0
-		print('No saved count map found')
-
+def get_count_map_and_count(rows: list[tuple]) -> tuple[dict, int]:
+	count_map: dict = {}
+	total_count: int = 0
 	for row in rows:
 		total_count += load_count_map(row)
+	return (count_map, total_count)
 	
-	try:
-		with open(COUNT_MAP_FILENAME, 'wb') as f:
-			pickle.dump(count_map, f)
-			print('Saved count map')
-	except:
-		print('Could not save count map')
-	
-	# print(count_map)
-	return count_map
-	
+def load_quartiles(counted_map: dict, total_count: int):
+	count = 0
+	for (id, appearances_count) in counted_map.items():
+		if count <= total_count * 0.25:
+			first_quantile[id] = appearances_count
+		elif count <= total_count * 0.5:
+			second_quantile[id] = appearances_count
+		elif count <= total_count * 0.75:
+			third_quantile[id] = appearances_count
+		count += appearances_count
 
+def process_row(row: tuple):
+	idArr = [0, 0, 0, 0]
+	if row[1]:
+		for award in row[1]:
+			if('suppliers' in award):
+				for supplier in award['suppliers']:
+					id = supplier['id']
+					if id in first_quantile:
+						idArr[0] += 1
+					elif id in second_quantile:
+						idArr[1] += 1
+					elif id in third_quantile:
+						idArr[2] += 1
+					else:
+						idArr[3] += 1
+	return idArr
 
 def main(arguments):
 	query = """
@@ -60,12 +72,13 @@ def main(arguments):
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
 	rows = helpers.get_rows(query)
-	counted_map = get_count_map(rows)
-	
+	(counted_map, total_count) = get_count_map_and_count(rows)
 	sorted_by_count = sorted(counted_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
 	converted_dict = dict(sorted_by_count)
-
-	converted_dict
+	load_quartiles(converted_dict, total_count)
+	for row in rows:
+		idArr = process_row(row)
+		print(row[0], ',', idArr)
 
 	
 	
