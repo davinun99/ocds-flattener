@@ -1,6 +1,5 @@
 import sys
 sys.path.append('./src')
-import pickle
 import helpers
 
 BATCH_SIZE = 1000
@@ -15,26 +14,28 @@ second_quantile = {}
 third_quantile = {}	
 
 def load_count_map(row: tuple) -> int:
+	supplier_ids = set()
 	count = 0
 	if row[1]:
 		for award in row[1]:
 			if('suppliers' in award):
 				for supplier in award['suppliers']:
 					id = supplier['id']
-					count += 1
-					if id in count_map:
-						count_map[id] += 1
-					else:
-						count_map[id] = 1
+					supplier_ids.add(id)
+	for id in supplier_ids:
+		if id in count_map:
+			count_map[id] += 1
+		else:
+			count_map[id] = 1
+		count += 1
 	return count
 
 
-def get_count_map_and_count(rows: list[tuple]) -> tuple[dict, int]:
-	count_map: dict = {}
+def get_count_and_load_map(rows: list[tuple]) -> int:
 	total_count: int = 0
 	for row in rows:
 		total_count += load_count_map(row)
-	return (count_map, total_count)
+	return total_count
 	
 def load_quartiles(counted_map: dict, total_count: int):
 	count = 0
@@ -49,20 +50,31 @@ def load_quartiles(counted_map: dict, total_count: int):
 
 def process_row(row: tuple):
 	idArr = [0, 0, 0, 0]
+	supplier_ids = set()
 	if row[1]:
 		for award in row[1]:
 			if('suppliers' in award):
 				for supplier in award['suppliers']:
 					id = supplier['id']
-					if id in first_quantile:
-						idArr[0] += 1
-					elif id in second_quantile:
-						idArr[1] += 1
-					elif id in third_quantile:
-						idArr[2] += 1
-					else:
-						idArr[3] += 1
+					supplier_ids.add(id)
+	for id in supplier_ids:
+		if id in first_quantile:
+			idArr[0] += 1
+		if id in second_quantile:
+			idArr[1] += 1
+		if id in third_quantile:
+			idArr[2] += 1
+		if id in count_map:
+			idArr[3] += 1
 	return idArr
+
+def print_dict(file_name:str, dict: dict):
+	with open(f'out/{file_name}', 'w') as f:
+		sys.stdout = f # Change the standard output to the file we created.
+		# print('This message will be written to a file.')
+		for (a, b) in dict.items():
+			print(a, ',', b)
+		sys.stdout = sys.__stdout__ # Reset
 
 def main(arguments):
 	query = """
@@ -72,15 +84,23 @@ def main(arguments):
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
 	rows = helpers.get_rows(query)
-	(counted_map, total_count) = get_count_map_and_count(rows)
-	sorted_by_count = sorted(counted_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
+	total_count = get_count_and_load_map(rows)
+	print_dict('counted_map.txt', count_map)
+
+	sorted_by_count = sorted(count_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
 	converted_dict = dict(sorted_by_count)
+	
+	print_dict('sorted_counted_map.txt', converted_dict)
+	
 	load_quartiles(converted_dict, total_count)
+
+	print_dict('first_quartile.txt', first_quantile)
+	print_dict('second_quartile.txt', second_quantile)
+	print_dict('third_quartile.txt', third_quantile)
+
 	for row in rows:
 		idArr = process_row(row)
 		print(row[0], ',', idArr)
-
-	
 	
 	
 if __name__ == '__main__':
