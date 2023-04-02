@@ -13,6 +13,13 @@ def read_query_from_file (file_path: str) -> str:
 	return data
 
 def get_rows(query: str) -> list[tuple]:
+	"""
+	> This function executes a query and returns the rows
+	
+	:param query: The query to execute
+	:type query: str
+	:return: A list of tuples.
+	"""
 	if(settings.con is None):
 		return []
 	cursor = settings.con.cursor()
