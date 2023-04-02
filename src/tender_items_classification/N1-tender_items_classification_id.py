@@ -51,9 +51,9 @@ def process_row(row: tuple):
 					id = item['classification']['id'][0:2]
 					if id in main_map_70:
 						index = main_map_70[id]
-						idArr[index] = 1
+						idArr[index] += 1
 					else:
-						idArr[-1] = 1
+						idArr[-1] += 1
 					
 	return idArr
 
