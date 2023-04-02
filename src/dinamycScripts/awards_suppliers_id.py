@@ -60,16 +60,16 @@ def process_row(row: tuple):
 	for id in supplier_ids:
 		if id in first_quantile:
 			idArr[0] += 1
-		if id in second_quantile:
+		elif id in second_quantile:
 			idArr[1] += 1
-		if id in third_quantile:
+		elif id in third_quantile:
 			idArr[2] += 1
-		if id in count_map:
+		else:
 			idArr[3] += 1
 	return idArr
 
 def print_dict(file_name:str, dict: dict):
-	with open(f'out/{file_name}', 'w') as f:
+	with open(f'__out/{file_name}', 'w') as f:
 		sys.stdout = f # Change the standard output to the file we created.
 		# print('This message will be written to a file.')
 		for (a, b) in dict.items():
