@@ -25,15 +25,15 @@ guarantee_type_map = {
 	"Endoso - Fondo de Reparo": 17,
 }
 
-def process_row (row: tuple) -> tuple:
+def process_row (row: tuple, colNumber: int) -> list:
 	countArr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	if row[1]:
-		for contract in row[1]:
+	if row[colNumber]:
+		for contract in row[colNumber]:
 			if('guarantees' in contract):
 				for guarantee in contract['guarantees']:
 					ind = guarantee_type_map[guarantee['obligations']]
 					countArr[ind] += 1
-	return (row[0], countArr)
+	return countArr
 
 def main(arguments):
 	query = """
@@ -42,9 +42,9 @@ def main(arguments):
 			data['compiledRelease']['contracts'] as "contracts"
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
-	for row in helpers.get_rows(query):
-		idArr = process_row(row)
-		print(idArr)
+	# for row in helpers.get_rows(query):
+		# idArr = process_row(row)
+		# print(idArr)
 
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+# if __name__ == '__main__':
+    # sys.exit(main(sys.argv[1:]))
