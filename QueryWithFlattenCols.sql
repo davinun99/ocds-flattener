@@ -66,19 +66,6 @@ select
 	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['lots']), 0) as "tender.lots.count",
 	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['enquiries']), 0) as "tender.enquiries.count",
 	COALESCE(jsonb_array_length(data['compiledRelease']['awards']), 0) as "awards.count",
-	--FALTA LOGICA awards.value.amount
-	--FALTA awards.items.classification.description
-	--FALTA awards.suppliers.id
-	--FALTA awards.documents.DocumentTypeDetails
-	-- 	awards.amendments
-	-- awards.relatedLots
-	-- awards.requirementResponses
-	-- awards.relatedBids
 	COALESCE(jsonb_array_length(data['compiledRelease']['contracts']), 0) as "contracts.count",
-	-- FALTA LOGICA contracts.value.amount
-	-- contracts.documents.DocumentTypeDetails
-	-- contracts.implementation.transactions
-	-- contracts.implementation.documents.DocumentTypeDetails
-	-- contracts.implementation.purchaseOrders
 FROM RECORD r join data d on d.id = r.data_id 
 LIMIT 50
