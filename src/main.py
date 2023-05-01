@@ -6,6 +6,29 @@ import scripts.contracts_investmentprojects_id as contracts_investmentprojects_i
 import scripts.contracts_amendments_amendsAmount as contracts_amendments_amendsAmount
 import scripts.contracts_amendments_count as contracts_amendments_count
 import scripts.contracts_implementation_purchaseOrders_count as contracts_implementation_purchaseOrders_count
+import scripts.contracts_implementation_transactions_count as contracts_implementation_transactions_count
+import scripts.contracts_documents_DocumentTypeDetails as contracts_documents_DocumentTypeDetails
+import scripts.contracts_value_amount as contracts_value_amount
+import scripts.contracts_status as contracts_status
+import scripts.contracts_statusDetails as contracts_statusDetails
+import scripts.awards_documents_documentTypeDetails as awards_documents_documentTypeDetails
+import dynamicScripts.awards_suppliers_id as awards_suppliers_id
+import scripts.awards_value_amount as awards_value_amount
+import scripts.awards_status as awards_status
+import scripts.awards_statusDetails as awards_statusDetails
+import scripts.tender_coveredBy as tender_coveredBy
+# tender.criteria.id
+import dynamicScripts.tender_notifiedSuppliers_id as tender_notifiedSuppliers_id
+# import scripts.tender
+# tender.documents.DocumentTypeDetails
+import dynamicScripts.tender_tenderers_id as tender_tenderers_id
+
+import tender_items_classification.N5_tender_items_classification_id as N5_tender_items_classification_id
+import tender_items_classification.N4_tender_items_classification_id as N4_tender_items_classification_id
+import tender_items_classification.N3_tender_items_classification_id as N3_tender_items_classification_id
+import tender_items_classification.N2_tender_items_classification_id as N2_tender_items_classification_id
+import tender_items_classification.N1_tender_items_classification_id as N1_tender_items_classification_id
+import tender_items_classification.N1_1_tender_items_classification_id as N1_1_tender_items_classification_id
 
 def main(arguments):
 	query = """
@@ -82,7 +105,9 @@ SELECT
 FROM RECORD r join data d on d.id = r.data_id 
 	"""
 	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count', end='')
-	print(';;;contracts.guarantees.obligations;;;contracts.investmentProjects.id;;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.implementation.purchaseOrders.count')
+	print(';;;contracts.guarantees.obligations;;;contracts.investmentProjects.id;;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.implementation.purchaseOrders.count;;;contracts.implementation.transactions.count;;;contracts.documents.DocumentTypeDetails', end='')
+	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_pyg;;;')
+	# print(';;;')
 	for row in helpers.get_rows(query):
 		# idArr = process_row(row)
 		for i in range(len(row)):
@@ -97,7 +122,11 @@ FROM RECORD r join data d on d.id = r.data_id
 				res69 = contracts_amendments_amendsAmount.process_row(row, 67)
 				res70 = contracts_amendments_count.process_row(row, 67)
 				res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
-				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71}', end='')
+				res72 = contracts_implementation_transactions_count.process_row(row, 67)
+				res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
+				res74 = contracts_value_amount.process_row(row, 67)
+				res75 = contracts_status.process_row(row, 67)
+				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;', end='')
 			# elif i == 68:
 				
 		print('')
