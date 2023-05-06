@@ -14,14 +14,14 @@ map = {
 	"seguridad_nacional": 7,
 }
 
-def process_row (row: tuple) -> tuple:
+def process_row (row: tuple, colNumber: int) -> list[int]:
 	countArr = [0] * len(list(map))
-	if row[1]:
-		if('coveredBy' in row[1]):
-			for cover in row[1]['coveredBy']:
+	if row[colNumber]:
+		if('coveredBy' in row[colNumber]):
+			for cover in row[colNumber]['coveredBy']:
 				ind = map[cover]
 				countArr[ind] += 1
-	return (row[0], countArr)
+	return countArr
 
 def main(arguments):
 	query = """
@@ -30,9 +30,9 @@ def main(arguments):
 			data['compiledRelease']['tender'] as "tender"
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
-	for row in helpers.get_rows(query):
-		idArr = process_row(row)
-		print(idArr)
+	# for row in helpers.get_rows(query):
+	# 	idArr = process_row(row)
+	# 	print(idArr)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

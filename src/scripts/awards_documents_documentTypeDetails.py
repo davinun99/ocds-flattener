@@ -41,9 +41,9 @@ def main(arguments):
 			data['compiledRelease']['awards'] as "awards"
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
-	for row in helpers.get_rows(query):
-		idArr = process_row(row)
-		print(idArr)
+	# for row in helpers.get_rows(query):
+	# 	idArr = process_row(row)
+	# 	print(idArr)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
