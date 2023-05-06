@@ -10,6 +10,7 @@ map = {
     "Orden de compra entregada": 3,
     "Cancelado": 4,
     "Cancelada de la Orden de Compra": 5,
+    "Vencida Orden de Compra": 6,
 }
 
 def process_row (row: tuple, colNumber: int) -> list[int]:
