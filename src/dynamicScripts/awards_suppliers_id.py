@@ -12,9 +12,9 @@ second_quantile = {}
 third_quantile = {}	
 
 class AwardSuppliers:
-	def __init__(self, rows: list[tuple]):
+	def __init__(self, rows: list[tuple], colNumber:int):
 		self.rows = rows
-		
+		self.colNumber = colNumber
 		self.count_map = {}
 
 		self.first_quantile = {}
@@ -38,8 +38,8 @@ class AwardSuppliers:
 	def load_count_map(self, row: tuple) -> int:
 		supplier_ids = set()
 		count = 0
-		if row[1]:
-			for award in row[1]:
+		if row[self.colNumber]:
+			for award in row[self.colNumber]:
 				if('suppliers' in award):
 					for supplier in award['suppliers']:
 						id = supplier['id']
