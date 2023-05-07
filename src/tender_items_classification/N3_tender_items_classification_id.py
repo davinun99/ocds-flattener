@@ -6,96 +6,74 @@ BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
 COUNT_MAP_FILENAME = 'saved_count_map.pkl'
 
-count_map = {}
-index_map = {}
+class N3TenderItemsClassification:
+	def load_count_map(self, row: tuple) -> int:
+		count = 0
+		if row[self.colNumber]:
+			if('items' in row[self.colNumber]):
+				for item in row[self.colNumber]['items']:
+					if('classification' in item):
+						id = item['classification']['id'][0:6]
+						if id in self.count_map:
+							self.count_map[id] += 1
+						else:
+							self.count_map[id] = 1
+						count += 1
+		return count
 
-first_quantile: dict = {}
-second_quantile = {}
-third_quantile = {}	
+	def get_count_and_load_map(self, rows: list[tuple]) -> int:
+		total_count: int = 0
+		for row in rows:
+			total_count += self.load_count_map(row)
+		return total_count
+		
+	def load_quartiles(self, counted_map: dict, total_count: int):
+		count = 0
+		for (id, appearances_count) in counted_map.items():
+			if count <= total_count * 0.25:
+				self.first_quantile[id] = appearances_count
+			elif count <= total_count * 0.5:
+				self.second_quantile[id] = appearances_count
+			elif count <= total_count * 0.75:
+				self.third_quantile[id] = appearances_count
+			count += appearances_count
 
-def load_count_map(row: tuple) -> int:
-	count = 0
-	if row[1]:
-		if('items' in row[1]):
-			for item in row[1]['items']:
-				if('classification' in item):
-					id = item['classification']['id'][0:6]
-					if id in count_map:
-						count_map[id] += 1
-					else:
-						count_map[id] = 1
-					count += 1
-	return count
+	def process_row(self, row: tuple, colNumber: int):
+		idArr = [0, 0, 0, 0]
+		if row[colNumber]:
+			if('items' in row[colNumber]):
+				for item in row[colNumber]['items']:
+					if('classification' in item):
+						# id = item['classification']['id']
+						id = item['classification']['id'][0:6]
+						if id in self.first_quantile:
+							idArr[0] += 1
+						elif id in self.second_quantile:
+							idArr[1] += 1
+						elif id in self.third_quantile:
+							idArr[2] += 1
+						else:
+							idArr[3] += 1
+		return idArr
 
-def get_count_and_load_map(rows: list[tuple]) -> int:
-	total_count: int = 0
-	for row in rows:
-		total_count += load_count_map(row)
-	return total_count
-	
-def load_quartiles(counted_map: dict, total_count: int):
-	count = 0
-	for (id, appearances_count) in counted_map.items():
-		if count <= total_count * 0.25:
-			first_quantile[id] = appearances_count
-		elif count <= total_count * 0.5:
-			second_quantile[id] = appearances_count
-		elif count <= total_count * 0.75:
-			third_quantile[id] = appearances_count
-		count += appearances_count
+	def print_dict(self, file_name:str, dict: dict):
+		with open(f'__out/{file_name}', 'w') as f:
+			sys.stdout = f # Change the standard output to the file we created.
+			# print('This message will be written to a file.')
+			for (a, b) in dict.items():
+				print(a, ',', b)
+			sys.stdout = sys.__stdout__ # Reset
 
-def process_row(row: tuple):
-	idArr = [0, 0, 0, 0]
-	if row[1]:
-		if('items' in row[1]):
-			for item in row[1]['items']:
-				if('classification' in item):
-					# id = item['classification']['id']
-					id = item['classification']['id'][0:6]
-					if id in first_quantile:
-						idArr[0] += 1
-					elif id in second_quantile:
-						idArr[1] += 1
-					elif id in third_quantile:
-						idArr[2] += 1
-					else:
-						idArr[3] += 1
-	return idArr
+	def __init__(self, rows: list[tuple], colNumber: int):
+		self.count_map = {}
+		self.colNumber = colNumber
+		self.first_quantile: dict = {}
+		self.second_quantile = {}
+		self.third_quantile = {}	
 
-def print_dict(file_name:str, dict: dict):
-	with open(f'__out/{file_name}', 'w') as f:
-		sys.stdout = f # Change the standard output to the file we created.
-		# print('This message will be written to a file.')
-		for (a, b) in dict.items():
-			print(a, ',', b)
-		sys.stdout = sys.__stdout__ # Reset
+		total_count = self.get_count_and_load_map(rows)
 
-def main(arguments):
-	query = """
-		SELECT
-			data['compiledRelease']['ocid'] as "id",
-			data['compiledRelease']['tender'] as "tender"
-		FROM RECORD r join data d on d.id = r.data_id
-	"""
-	rows = helpers.get_rows(query)
-	total_count = get_count_and_load_map(rows)
-	print_dict('counted_map.txt', count_map)
-
-	sorted_by_count = sorted(count_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
-	converted_dict = dict(sorted_by_count)
-	
-	print_dict('sorted_counted_map.txt', converted_dict)
-	
-	load_quartiles(converted_dict, total_count)
-
-	print_dict('first_quartile.txt', first_quantile)
-	print_dict('second_quartile.txt', second_quantile)
-	print_dict('third_quartile.txt', third_quantile)
-
-	for row in rows:
-		idArr = process_row(row)
-		print(row[0], ',', idArr)
-	
-	
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+		sorted_by_count = sorted(self.count_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
+		converted_dict = dict(sorted_by_count)
+		
+		self.load_quartiles(converted_dict, total_count)
