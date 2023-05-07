@@ -109,7 +109,7 @@ SELECT
 	data['compiledRelease']['contracts'] as "contracts", -- 67
 	data['compiledRelease']['awards'] as "awards", --68
 	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --69
-	data['compiledRelease']['tender'] as "tender" --70
+	data['compiledRelease']['tender'] as "tender", --70
 	data['compiledRelease']['planning'] as "planning" --71
 FROM RECORD r join data d on d.id = r.data_id 
 	"""
@@ -118,7 +118,7 @@ FROM RECORD r join data d on d.id = r.data_id
 	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_pyg;;;contracts.status;;;contracts.statusDetails;;;awards.documents.DocumentTypeDetails;;;awards.suppliers.id;;;awards.value.amount_pyg;;;awards.value.amount_usd', end='')
 	print(';;;awards.status;;;awards.statusDetails;;;tender.coveredBy;;;tender.notifiedSuppliers.id;;;tender.tenderers.id', end='')
 	print(';;;tender.items.classification.id.n5;;;tender.items.classification.id.n4;;;tender.items.classification.id.n3;;;tender.items.classification.id.n2;;;tender.items.classification.id.n1;;;tender.items.classification.id.n1_1', end='')
-	print(';;;planning.items.classification.id.n4;;;planning.items.classification.id.n3;;;planning.items.classification.id.n2;;;planning.items.classification.id.n1;;;planning.items.classification.id.n1_1', end='')
+	print(';;;planning.items.classification.id.n4;;;planning.items.classification.id.n3;;;planning.items.classification.id.n2;;;planning.items.classification.id.n1;;;planning.items.classification.id.n1_1')
 
 	rows = helpers.get_rows(query)
 	AwardSuppliers = awards_suppliers_id.AwardSuppliers(rows, 68)
@@ -156,12 +156,18 @@ FROM RECORD r join data d on d.id = r.data_id
 				res74 = contracts_value_amount.process_row(row, 67)
 				res75 = contracts_status.process_row(row, 67)
 				res76 = contracts_statusDetails.process_row(row, 67)
+				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}', end='')
+			elif i == 68:
 				res77 = awards_documents_documentTypeDetails.process_row(row, 68)
 				res78 = AwardSuppliers.process_row(row, 68)
 				res79 = awards_value_amount.process_row(row, 68)
 				res80 = awards_status.process_row(row, 68)
 				res81 = awards_statusDetails.process_row(row, 68)
+				print(f'{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81}', end='')
+			elif i == 69:
 				res82 = tender_coveredBy.process_row(row, 69)
+				print(f';;;{res82}', end='')
+			elif i == 70:
 				res83 = TenderNotifiedSuppliers.process_row(row, 70)
 				res84 = TenderTenderers.process_row(row, 70)
 
@@ -172,16 +178,15 @@ FROM RECORD r join data d on d.id = r.data_id
 				res89 = N1TenderItemsClass.process_row(row, 70)
 				res90 = N1_1TenderItemsClass.process_row(row, 70)
 
+				print(f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90}', end='')
+			elif i == 71:
 				res91 = N4PlanningItemsClass.process_row(row, 71)
 				res92 = N3PlanningItemsClass.process_row(row, 71)
 				res93 = N2PlanningItemsClass.process_row(row, 71)
 				res94 = N1PlanningItemsClass.process_row(row, 71)
 				res95 = N1_1PlanningItemsClass.process_row(row, 71)
-
-				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76};;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81};;;{res82};;;{res83};;;{res84};;;{res85};;;{res86};;;{res87}', end='')
-				print(f';;;{res88};;;{res89};;;{res90};;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
-			# elif i == 68:
-			# df_total = pd.read_csv('result.csv', sep=';;;', index_col=False)
+				print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
+			
 		print('')
 
 if __name__ == '__main__':
