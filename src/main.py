@@ -30,6 +30,12 @@ import tender_items_classification.N2_tender_items_classification_id as N2_tende
 import tender_items_classification.N1_tender_items_classification_id as N1_tender_items_classification_id
 import tender_items_classification.N1_1_tender_items_classification_id as N1_1_tender_items_classification_id
 
+import planning_items_classification.N4_planning_items_classification_id as N4_planning_items_classification_id
+import planning_items_classification.N3_planning_items_classification_id as N3_planning_items_classification_id
+import planning_items_classification.N2_planning_items_classification_id as N2_planning_items_classification_id
+import planning_items_classification.N1_planning_items_classification_id as N1_planning_items_classification_id
+import planning_items_classification.N1_1_planning_items_classification_id as N1_1_planning_items_classification_id
+
 def main(arguments):
 	query = """
 SELECT
@@ -104,13 +110,15 @@ SELECT
 	data['compiledRelease']['awards'] as "awards", --68
 	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --69
 	data['compiledRelease']['tender'] as "tender" --70
+	data['compiledRelease']['planning'] as "planning" --71
 FROM RECORD r join data d on d.id = r.data_id 
 	"""
 	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count', end='')
 	print(';;;contracts.guarantees.obligations;;;contracts.investmentProjects.id;;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.implementation.purchaseOrders.count;;;contracts.implementation.transactions.count;;;contracts.documents.DocumentTypeDetails', end='')
 	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_pyg;;;contracts.status;;;contracts.statusDetails;;;awards.documents.DocumentTypeDetails;;;awards.suppliers.id;;;awards.value.amount_pyg;;;awards.value.amount_usd', end='')
-	print(';;;awards.status;;;awards.statusDetails;;;tender.coveredBy;;;tender.notifiedSuppliers.id;;;tender.tenderers.id;;;tender.items.classification.id.n5;;;tender.items.classification.id.n4;;;tender.items.classification.id.n3', end='')
-	print(';;;tender.items.classification.id.n2;;;tender.items.classification.id.n1;;;tender.items.classification.id.n1_1', end='')
+	print(';;;awards.status;;;awards.statusDetails;;;tender.coveredBy;;;tender.notifiedSuppliers.id;;;tender.tenderers.id', end='')
+	print(';;;tender.items.classification.id.n5;;;tender.items.classification.id.n4;;;tender.items.classification.id.n3;;;tender.items.classification.id.n2;;;tender.items.classification.id.n1;;;tender.items.classification.id.n1_1', end='')
+	print(';;;planning.items.classification.id.n4;;;planning.items.classification.id.n3;;;planning.items.classification.id.n2;;;planning.items.classification.id.n1;;;planning.items.classification.id.n1_1', end='')
 
 	rows = helpers.get_rows(query)
 	AwardSuppliers = awards_suppliers_id.AwardSuppliers(rows, 68)
@@ -122,7 +130,13 @@ FROM RECORD r join data d on d.id = r.data_id
 	N2TenderItemsClass = N2_tender_items_classification_id.N2TenderItemsClassification(rows, 70)
 	N1TenderItemsClass = N1_tender_items_classification_id.N1TenderItemsClassification(rows, 70)
 	N1_1TenderItemsClass = N1_1_tender_items_classification_id.N1_1TenderItemsClassification(rows, 70)
-	
+
+	N4PlanningItemsClass = N4_planning_items_classification_id.N4PlanningItemsClassification(rows, 71)
+	N3PlanningItemsClass = N3_planning_items_classification_id.N3PlanningItemsClassification(rows, 71)
+	N2PlanningItemsClass = N2_planning_items_classification_id.N2PlanningItemsClassification(rows, 71)
+	N1PlanningItemsClass = N1_planning_items_classification_id.N1PlanningItemsClassification(rows, 71)
+	N1_1PlanningItemsClass = N1_1_planning_items_classification_id.N1_1PlanningItemsClassification(rows, 71)
+
 	for row in rows:
 		# idArr = process_row(row)
 		for i in range(len(row)):
@@ -150,6 +164,7 @@ FROM RECORD r join data d on d.id = r.data_id
 				res82 = tender_coveredBy.process_row(row, 69)
 				res83 = TenderNotifiedSuppliers.process_row(row, 70)
 				res84 = TenderTenderers.process_row(row, 70)
+
 				res85 = N5TenderItemsClass.process_row(row, 70)
 				res86 = N4TenderItemsClass.process_row(row, 70)
 				res87 = N3TenderItemsClass.process_row(row, 70)
@@ -157,8 +172,14 @@ FROM RECORD r join data d on d.id = r.data_id
 				res89 = N1TenderItemsClass.process_row(row, 70)
 				res90 = N1_1TenderItemsClass.process_row(row, 70)
 
+				res91 = N4PlanningItemsClass.process_row(row, 71)
+				res92 = N3PlanningItemsClass.process_row(row, 71)
+				res93 = N2PlanningItemsClass.process_row(row, 71)
+				res94 = N1PlanningItemsClass.process_row(row, 71)
+				res95 = N1_1PlanningItemsClass.process_row(row, 71)
+
 				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76};;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81};;;{res82};;;{res83};;;{res84};;;{res85};;;{res86};;;{res87}', end='')
-				print(f';;;{res88};;;{res89};;;{res90}', end='')
+				print(f';;;{res88};;;{res89};;;{res90};;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
 			# elif i == 68:
 			# df_total = pd.read_csv('result.csv', sep=';;;', index_col=False)
 		print('')

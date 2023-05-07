@@ -37,11 +37,11 @@ class N4PlanningItemsClassification:
 				self.third_quantile[id] = appearances_count
 			count += appearances_count
 
-	def process_row(self, row: tuple):
+	def process_row(self, row: tuple, colNumber: int):
 		idArr = [0, 0, 0, 0]
-		if row[self.colNumber]:
-			if('items' in row[self.colNumber]):
-				for item in row[self.colNumber]['items']:
+		if row[colNumber]:
+			if('items' in row[colNumber]):
+				for item in row[colNumber]['items']:
 					if('classification' in item):
 						id = item['classification']['id']
 						if id in self.first_quantile:

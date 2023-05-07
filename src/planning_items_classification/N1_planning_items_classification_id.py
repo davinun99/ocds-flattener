@@ -38,11 +38,11 @@ class N1PlanningItemsClassification:
 				break
 			count += appearances_count
 
-	def process_row(self, row: tuple):
+	def process_row(self, row: tuple, colNumber: int):
 		idArr = [0] *( len(list(self.main_map_70)) + 1 )
 		if row[self.colNumber]:
-			if('items' in row[self.colNumber]):
-				for item in row[self.colNumber]['items']:
+			if('items' in row[colNumber]):
+				for item in row[colNumber]['items']:
 					if('classification' in item):
 						id = item['classification']['id'][0:2]
 						if id in self.main_map_70:
@@ -61,7 +61,7 @@ class N1PlanningItemsClassification:
 				print(a, ',', b)
 			sys.stdout = sys.__stdout__ # Reset
 
-	def main(self, rows: list[tuple], colNumber: int):
+	def __init__(self, rows: list[tuple], colNumber: int):
 		self.colNumber = colNumber
 		self.count_map = {}
 		self.main_map_70: dict = {}
