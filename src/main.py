@@ -110,6 +110,7 @@ FROM RECORD r join data d on d.id = r.data_id
 	print(';;;contracts.guarantees.obligations;;;contracts.investmentProjects.id;;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.implementation.purchaseOrders.count;;;contracts.implementation.transactions.count;;;contracts.documents.DocumentTypeDetails', end='')
 	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_pyg;;;contracts.status;;;contracts.statusDetails;;;awards.documents.DocumentTypeDetails;;;awards.suppliers.id;;;awards.value.amount_pyg;;;awards.value.amount_usd', end='')
 	print(';;;awards.status;;;awards.statusDetails;;;tender.coveredBy;;;tender.notifiedSuppliers.id;;;tender.tenderers.id;;;tender.items.classification.id.n5;;;tender.items.classification.id.n4;;;tender.items.classification.id.n3', end='')
+	print(';;;tender.items.classification.id.n2;;;tender.items.classification.id.n1;;;tender.items.classification.id.n1_1', end='')
 
 	rows = helpers.get_rows(query)
 	AwardSuppliers = awards_suppliers_id.AwardSuppliers(rows, 68)
@@ -118,7 +119,10 @@ FROM RECORD r join data d on d.id = r.data_id
 	N5TenderItemsClass = N5_tender_items_classification_id.N5TenderItemsClassification(rows, 70)
 	N4TenderItemsClass = N4_tender_items_classification_id.N4TenderItemsClassification(rows, 70)
 	N3TenderItemsClass = N3_tender_items_classification_id.N3TenderItemsClassification(rows, 70)
-
+	N2TenderItemsClass = N2_tender_items_classification_id.N2TenderItemsClassification(rows, 70)
+	N1TenderItemsClass = N1_tender_items_classification_id.N1TenderItemsClassification(rows, 70)
+	N1_1TenderItemsClass = N1_1_tender_items_classification_id.N1_1TenderItemsClassification(rows, 70)
+	
 	for row in rows:
 		# idArr = process_row(row)
 		for i in range(len(row)):
@@ -149,8 +153,12 @@ FROM RECORD r join data d on d.id = r.data_id
 				res85 = N5TenderItemsClass.process_row(row, 70)
 				res86 = N4TenderItemsClass.process_row(row, 70)
 				res87 = N3TenderItemsClass.process_row(row, 70)
+				res88 = N2TenderItemsClass.process_row(row, 70)
+				res89 = N1TenderItemsClass.process_row(row, 70)
+				res90 = N1_1TenderItemsClass.process_row(row, 70)
 
 				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76};;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81};;;{res82};;;{res83};;;{res84};;;{res85};;;{res86};;;{res87}', end='')
+				print(f';;;{res88};;;{res89};;;{res90}', end='')
 			# elif i == 68:
 			# df_total = pd.read_csv('result.csv', sep=';;;', index_col=False)
 		print('')
