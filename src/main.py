@@ -3,6 +3,38 @@ sys.path.append('./src')
 import helpers
 import scripts.guarantees_obligations as guarantees_obligations
 import scripts.contracts_investmentprojects_id as contracts_investmentprojects_id
+import scripts.contracts_amendments_amendsAmount as contracts_amendments_amendsAmount
+import scripts.contracts_amendments_count as contracts_amendments_count
+import scripts.contracts_implementation_purchaseOrders_count as contracts_implementation_purchaseOrders_count
+import scripts.contracts_implementation_transactions_count as contracts_implementation_transactions_count
+import scripts.contracts_documents_DocumentTypeDetails as contracts_documents_DocumentTypeDetails
+import scripts.contracts_value_amount as contracts_value_amount
+import scripts.contracts_status as contracts_status
+import scripts.contracts_statusDetails as contracts_statusDetails
+import scripts.awards_documents_documentTypeDetails as awards_documents_documentTypeDetails
+import dynamicScripts.awards_suppliers_id as awards_suppliers_id
+import scripts.awards_value_amount as awards_value_amount
+import scripts.awards_status as awards_status
+import scripts.awards_statusDetails as awards_statusDetails
+import scripts.tender_coveredBy as tender_coveredBy
+# tender.criteria.id
+import dynamicScripts.tender_notifiedSuppliers_id as tender_notifiedSuppliers_id
+# import scripts.tender
+# tender.documents.DocumentTypeDetails
+import dynamicScripts.tender_tenderers_id as tender_tenderers_id
+
+import tender_items_classification.N5_tender_items_classification_id as N5_tender_items_classification_id
+import tender_items_classification.N4_tender_items_classification_id as N4_tender_items_classification_id
+import tender_items_classification.N3_tender_items_classification_id as N3_tender_items_classification_id
+import tender_items_classification.N2_tender_items_classification_id as N2_tender_items_classification_id
+import tender_items_classification.N1_tender_items_classification_id as N1_tender_items_classification_id
+import tender_items_classification.N1_1_tender_items_classification_id as N1_1_tender_items_classification_id
+
+import planning_items_classification.N4_planning_items_classification_id as N4_planning_items_classification_id
+import planning_items_classification.N3_planning_items_classification_id as N3_planning_items_classification_id
+import planning_items_classification.N2_planning_items_classification_id as N2_planning_items_classification_id
+import planning_items_classification.N1_planning_items_classification_id as N1_planning_items_classification_id
+import planning_items_classification.N1_1_planning_items_classification_id as N1_1_planning_items_classification_id
 
 def main(arguments):
 	query = """
@@ -74,13 +106,38 @@ SELECT
 	COALESCE(jsonb_array_length(data['compiledRelease']['tender']['enquiries']), 0) as "tender.enquiries.count",
 	COALESCE(jsonb_array_length(data['compiledRelease']['awards']), 0) as "awards.count",
 	COALESCE(jsonb_array_length(data['compiledRelease']['contracts']), 0) as "contracts.count",
-	data['compiledRelease']['contracts'] as "contracts"
-	-- 67
+	data['compiledRelease']['contracts'] as "contracts", -- 67
+	data['compiledRelease']['awards'] as "awards", --68
+	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --69
+	data['compiledRelease']['tender'] as "tender", --70
+	data['compiledRelease']['planning'] as "planning" --71
 FROM RECORD r join data d on d.id = r.data_id 
-LIMIT 1
 	"""
-	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count;;;contracts.investmentProjects.id;;;contracts.guarantees.obligations')
-	for row in helpers.get_rows(query):
+	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count', end='')
+	print(';;;contracts.guarantees.obligations;;;contracts.investmentProjects.id;;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.implementation.purchaseOrders.count;;;contracts.implementation.transactions.count;;;contracts.documents.DocumentTypeDetails', end='')
+	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_pyg;;;contracts.status;;;contracts.statusDetails;;;awards.documents.DocumentTypeDetails;;;awards.suppliers.id;;;awards.value.amount_pyg;;;awards.value.amount_usd', end='')
+	print(';;;awards.status;;;awards.statusDetails;;;tender.coveredBy;;;tender.notifiedSuppliers.id;;;tender.tenderers.id', end='')
+	print(';;;tender.items.classification.id.n5;;;tender.items.classification.id.n4;;;tender.items.classification.id.n3;;;tender.items.classification.id.n2;;;tender.items.classification.id.n1;;;tender.items.classification.id.n1_1', end='')
+	print(';;;planning.items.classification.id.n4;;;planning.items.classification.id.n3;;;planning.items.classification.id.n2;;;planning.items.classification.id.n1;;;planning.items.classification.id.n1_1')
+
+	rows = helpers.get_rows(query)
+	AwardSuppliers = awards_suppliers_id.AwardSuppliers(rows, 68)
+	TenderNotifiedSuppliers = tender_notifiedSuppliers_id.NotifiedSuppliers(rows, 70)
+	TenderTenderers = tender_tenderers_id.TenderTenderers(rows, 70)
+	N5TenderItemsClass = N5_tender_items_classification_id.N5TenderItemsClassification(rows, 70)
+	N4TenderItemsClass = N4_tender_items_classification_id.N4TenderItemsClassification(rows, 70)
+	N3TenderItemsClass = N3_tender_items_classification_id.N3TenderItemsClassification(rows, 70)
+	N2TenderItemsClass = N2_tender_items_classification_id.N2TenderItemsClassification(rows, 70)
+	N1TenderItemsClass = N1_tender_items_classification_id.N1TenderItemsClassification(rows, 70)
+	N1_1TenderItemsClass = N1_1_tender_items_classification_id.N1_1TenderItemsClassification(rows, 70)
+
+	N4PlanningItemsClass = N4_planning_items_classification_id.N4PlanningItemsClassification(rows, 71)
+	N3PlanningItemsClass = N3_planning_items_classification_id.N3PlanningItemsClassification(rows, 71)
+	N2PlanningItemsClass = N2_planning_items_classification_id.N2PlanningItemsClassification(rows, 71)
+	N1PlanningItemsClass = N1_planning_items_classification_id.N1PlanningItemsClassification(rows, 71)
+	N1_1PlanningItemsClass = N1_1_planning_items_classification_id.N1_1PlanningItemsClassification(rows, 71)
+
+	for row in rows:
 		# idArr = process_row(row)
 		for i in range(len(row)):
 			if i == 0:
@@ -91,9 +148,45 @@ LIMIT 1
 			elif i == 67:
 				res67 = guarantees_obligations.process_row(row, 67)
 				res68 = contracts_investmentprojects_id.process_row(row, 67)
-				print(f';;;{res67};;;{res68}', end='')
-			# elif i == 68:
-				
+				res69 = contracts_amendments_amendsAmount.process_row(row, 67)
+				res70 = contracts_amendments_count.process_row(row, 67)
+				res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
+				res72 = contracts_implementation_transactions_count.process_row(row, 67)
+				res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
+				res74 = contracts_value_amount.process_row(row, 67)
+				res75 = contracts_status.process_row(row, 67)
+				res76 = contracts_statusDetails.process_row(row, 67)
+				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}', end='')
+			elif i == 68:
+				res77 = awards_documents_documentTypeDetails.process_row(row, 68)
+				res78 = AwardSuppliers.process_row(row, 68)
+				res79 = awards_value_amount.process_row(row, 68)
+				res80 = awards_status.process_row(row, 68)
+				res81 = awards_statusDetails.process_row(row, 68)
+				print(f'{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81}', end='')
+			elif i == 69:
+				res82 = tender_coveredBy.process_row(row, 69)
+				print(f';;;{res82}', end='')
+			elif i == 70:
+				res83 = TenderNotifiedSuppliers.process_row(row, 70)
+				res84 = TenderTenderers.process_row(row, 70)
+
+				res85 = N5TenderItemsClass.process_row(row, 70)
+				res86 = N4TenderItemsClass.process_row(row, 70)
+				res87 = N3TenderItemsClass.process_row(row, 70)
+				res88 = N2TenderItemsClass.process_row(row, 70)
+				res89 = N1TenderItemsClass.process_row(row, 70)
+				res90 = N1_1TenderItemsClass.process_row(row, 70)
+
+				print(f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90}', end='')
+			elif i == 71:
+				res91 = N4PlanningItemsClass.process_row(row, 71)
+				res92 = N3PlanningItemsClass.process_row(row, 71)
+				res93 = N2PlanningItemsClass.process_row(row, 71)
+				res94 = N1PlanningItemsClass.process_row(row, 71)
+				res95 = N1_1PlanningItemsClass.process_row(row, 71)
+				print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
+			
 		print('')
 
 if __name__ == '__main__':

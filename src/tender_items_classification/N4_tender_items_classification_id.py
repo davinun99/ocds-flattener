@@ -5,18 +5,19 @@ BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
 COUNT_MAP_FILENAME = 'saved_count_map.pkl'
 
-class TenderTenderers:
+class N4TenderItemsClassification:
 	def load_count_map(self, row: tuple) -> int:
 		count = 0
 		if row[self.colNumber]:
-			if('tenderers' in row[self.colNumber]):
-				for tenderer in row[self.colNumber]['tenderers']:
-					id = tenderer['id']
-					if id in self.count_map:
-						self.count_map[id] += 1
-					else:
-						self.count_map[id] = 1
-					count += 1
+			if('items' in row[self.colNumber]):
+				for item in row[self.colNumber]['items']:
+					if('classification' in item):
+						id = item['classification']['id'][0:8]
+						if id in self.count_map:
+							self.count_map[id] += 1
+						else:
+							self.count_map[id] = 1
+						count += 1
 		return count
 
 
@@ -40,17 +41,19 @@ class TenderTenderers:
 	def process_row(self, row: tuple, colNumber: int):
 		idArr = [0, 0, 0, 0]
 		if row[colNumber]:
-			if('tenderers' in row[colNumber]):
-				for tenderer in row[colNumber]['tenderers']:
-					id = tenderer['id']			
-					if id in self.first_quantile:
-						idArr[0] += 1
-					elif id in self.second_quantile:
-						idArr[1] += 1
-					elif id in self.third_quantile:
-						idArr[2] += 1
-					else:
-						idArr[3] += 1
+			if('items' in row[colNumber]):
+				for item in row[colNumber]['items']:
+					if('classification' in item):
+						# id = item['classification']['id']
+						id = item['classification']['id'][0:8]
+						if id in self.first_quantile:
+							idArr[0] += 1
+						elif id in self.second_quantile:
+							idArr[1] += 1
+						elif id in self.third_quantile:
+							idArr[2] += 1
+						else:
+							idArr[3] += 1
 		return idArr
 
 	def print_dict(self, file_name:str, dict: dict):
@@ -61,15 +64,14 @@ class TenderTenderers:
 				print(a, ',', b)
 			sys.stdout = sys.__stdout__ # Reset
 
-	def __init__(self, rows: list[tuple], colNumber: int):
-		self.colNumber = colNumber;
+	def __init__(self, rows: list[tuple], colNumber:int):
 		self.count_map = {}
+		self.colNumber = colNumber
 		self.first_quantile: dict = {}
 		self.second_quantile = {}
-		self.third_quantile = {}
+		self.third_quantile = {}	
 
 		total_count = self.get_count_and_load_map(rows)
 		sorted_by_count = sorted(self.count_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
 		converted_dict = dict(sorted_by_count)
 		self.load_quartiles(converted_dict, total_count)
-	

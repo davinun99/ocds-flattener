@@ -23,16 +23,16 @@ map = {
 	"Nota Rechazo Solicitud de Cancelacion": 16,
 }
 
-def process_row (row: tuple) -> tuple:
+def process_row (row: tuple, colNumber: int) -> list[int]:
 	countArr = [0] * len(list(map))
-	if row[1]:
-		for award in row[1]:
+	if row[colNumber]:
+		for award in row[colNumber]:
 			if('documents' in award):
 				for document in award['documents']:
 					if 'documentTypeDetails' in document:
 						ind = map[document['documentTypeDetails']]
 						countArr[ind] += 1
-	return (row[0], countArr)
+	return countArr
 
 def main(arguments):
 	query = """
@@ -41,9 +41,9 @@ def main(arguments):
 			data['compiledRelease']['awards'] as "awards"
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
-	for row in helpers.get_rows(query):
-		idArr = process_row(row)
-		print(idArr)
+	# for row in helpers.get_rows(query):
+	# 	idArr = process_row(row)
+	# 	print(idArr)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

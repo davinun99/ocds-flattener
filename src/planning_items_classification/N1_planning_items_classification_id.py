@@ -1,24 +1,25 @@
 import sys
 sys.path.append('./src')
+import helpers
 
 BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
 COUNT_MAP_FILENAME = 'saved_count_map.pkl'
 
-class TenderTenderers:
+class N1PlanningItemsClassification:
 	def load_count_map(self, row: tuple) -> int:
 		count = 0
 		if row[self.colNumber]:
-			if('tenderers' in row[self.colNumber]):
-				for tenderer in row[self.colNumber]['tenderers']:
-					id = tenderer['id']
-					if id in self.count_map:
-						self.count_map[id] += 1
-					else:
-						self.count_map[id] = 1
-					count += 1
+			if('items' in row[self.colNumber]):
+				for item in row[self.colNumber]['items']:
+					if('classification' in item):
+						id = item['classification']['id'][0:2]
+						if id in self.count_map:
+							self.count_map[id] += 1
+						else:
+							self.count_map[id] = 1
+						count += 1
 		return count
-
 
 	def get_count_and_load_map(self, rows: list[tuple]) -> int:
 		total_count: int = 0
@@ -26,31 +27,30 @@ class TenderTenderers:
 			total_count += self.load_count_map(row)
 		return total_count
 		
-	def load_quartiles(self, counted_map: dict, total_count: int):
+	def load_70(self, counted_map: dict, total_count: int):
 		count = 0
+		index_c = 0
 		for (id, appearances_count) in counted_map.items():
-			if count <= total_count * 0.25:
-				self.first_quantile[id] = appearances_count
-			elif count <= total_count * 0.5:
-				self.second_quantile[id] = appearances_count
-			elif count <= total_count * 0.75:
-				self.third_quantile[id] = appearances_count
+			if count <= total_count * 0.7:
+				self.main_map_70[id] = index_c
+				index_c += 1
+			else:
+				break
 			count += appearances_count
 
 	def process_row(self, row: tuple, colNumber: int):
-		idArr = [0, 0, 0, 0]
-		if row[colNumber]:
-			if('tenderers' in row[colNumber]):
-				for tenderer in row[colNumber]['tenderers']:
-					id = tenderer['id']			
-					if id in self.first_quantile:
-						idArr[0] += 1
-					elif id in self.second_quantile:
-						idArr[1] += 1
-					elif id in self.third_quantile:
-						idArr[2] += 1
-					else:
-						idArr[3] += 1
+		idArr = [0] *( len(list(self.main_map_70)) + 1 )
+		if row[self.colNumber]:
+			if('items' in row[colNumber]):
+				for item in row[colNumber]['items']:
+					if('classification' in item):
+						id = item['classification']['id'][0:2]
+						if id in self.main_map_70:
+							index = self.main_map_70[id]
+							idArr[index] += 1
+						else:
+							idArr[-1] += 1
+						
 		return idArr
 
 	def print_dict(self, file_name:str, dict: dict):
@@ -62,14 +62,14 @@ class TenderTenderers:
 			sys.stdout = sys.__stdout__ # Reset
 
 	def __init__(self, rows: list[tuple], colNumber: int):
-		self.colNumber = colNumber;
+		self.colNumber = colNumber
 		self.count_map = {}
-		self.first_quantile: dict = {}
-		self.second_quantile = {}
-		self.third_quantile = {}
+		self.main_map_70: dict = {}
 
 		total_count = self.get_count_and_load_map(rows)
+
 		sorted_by_count = sorted(self.count_map.items(), key=lambda x:x[1], reverse=True) #reverse True to really work
 		converted_dict = dict(sorted_by_count)
-		self.load_quartiles(converted_dict, total_count)
-	
+		
+		
+		self.load_70(converted_dict, total_count)
