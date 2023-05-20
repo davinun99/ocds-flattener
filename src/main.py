@@ -115,8 +115,8 @@ SELECT
 	data['compiledRelease']['awards'] as "awards", --68
 	data['compiledRelease']['tender']['coveredBy'] as "tender.coveredBy", --69
 	data['compiledRelease']['tender'] as "tender", --70
-	data['compiledRelease']['planning'] as "planning",, --71
-	data['compiledRelease']['parties'] as "parties" --72
+	data['compiledRelease']['planning'] as "planning", --71
+	data['compiledRelease']['parties'] as "parties", --72
 	data['compiledRelease']['complaints'] as "complaints", --73
 	COALESCE(jsonb_array_length(data['compiledRelease']['complaints']), 0) as "complaints.count" --74
 FROM RECORD r join data d on d.id = r.data_id
@@ -149,83 +149,81 @@ FROM RECORD r join data d on d.id = r.data_id
 	
 	for row in rows:
 		# idArr = process_row(row)
+		line = ''
 		for i in range(67):
 			if i == 0:
-				print(row[i], end='')
+				# print(row[i], end='')
+				line += row[i]
 				pass
 			elif i < 67:  #(67 direct from db)
 				if i == 3 or i == 39: # tender title and budget description
-					print(f';;;"{row[i]}"', end='')
+					# print(f';;;"{row[i]}"', end='')
+					line += f';;;"{row[i]}"'
 				else:
-					print(f';;;{row[i]}', end='')
+					# print(f';;;{row[i]}', end='')
+					line += f';;;{row[i]}'
 			## PROCESS SOME ROWS
-			elif i == 67:
-				res67 = guarantees_obligations.process_row(row, 67)
-				res68 = contracts_investmentprojects_id.process_row(row, 67)
-				res69 = contracts_amendments_amendsAmount.process_row(row, 67)
-				res70 = contracts_amendments_count.process_row(row, 67)
-				res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
-				res72 = contracts_implementation_transactions_count.process_row(row, 67)
-				res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
-				res74 = contracts_value_amount.process_row(row, 67)
-				res75 = contracts_status.process_row(row, 67)
-				res76 = contracts_statusDetails.process_row(row, 67)
-				print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}', end='')
-			elif i == 68:
-				res77 = awards_documents_documentTypeDetails.process_row(row, 68)
-				res78 = AwardSuppliers.process_row(row, 68)
-				res79 = awards_value_amount.process_row(row, 68)
-				res80 = awards_status.process_row(row, 68)
-				res81 = awards_statusDetails.process_row(row, 68)
-				print(f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;{res81}', end='')
-			elif i == 69:
-				res82 = tender_coveredBy.process_row(row, 69)
-				print(f';;;{res82}', end='')
-			elif i == 70:
-				res83 = TenderNotifiedSuppliers.process_row(row, 70)
-				res84 = TenderTenderers.process_row(row, 70)
-
-				res85 = N5TenderItemsClass.process_row(row, 70)
-				res86 = N4TenderItemsClass.process_row(row, 70)
-				res87 = N3TenderItemsClass.process_row(row, 70)
-				res88 = N2TenderItemsClass.process_row(row, 70)
-				res89 = N1TenderItemsClass.process_row(row, 70)
-				res90 = N1_1TenderItemsClass.process_row(row, 70)
-				res96 = tender_criteria_id.process_row(row, 70)
-				res97 = tender_enquiries.process_row(row, 70)
-				res98 = tender_lots.process_row(row, 70)
-				res99 = TenderDocumentsDocumentTypeDetail.process_row(row, 70)
-
-				print(f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90};;;{res96};;;{res97};;;{res98};;;{res99}', end='')
-			elif i == 71:
-				res91 = N4PlanningItemsClass.process_row(row, 71)
-				res92 = N3PlanningItemsClass.process_row(row, 71)
-				res93 = N2PlanningItemsClass.process_row(row, 71)
-				res94 = N1PlanningItemsClass.process_row(row, 71)
-				res95 = N1_1PlanningItemsClass.process_row(row, 71)
-				print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
-			elif i == 72:
-				res100 = parties_details_entityType.process_row(row, 72)
-				res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
-				res102 = PartiesRoles.process_row(row, 72)
-				print(f';;;{res100};;;{res101};;;{res102}', end='')
+		res67 = guarantees_obligations.process_row(row, 67)
+		res68 = contracts_investmentprojects_id.process_row(row, 67)
+		res69 = contracts_amendments_amendsAmount.process_row(row, 67)
+		res70 = contracts_amendments_count.process_row(row, 67)
+		res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
+		res72 = contracts_implementation_transactions_count.process_row(row, 67)
+		res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
+		res74 = contracts_value_amount.process_row(row, 67)
+		res75 = contracts_status.process_row(row, 67)
+		res76 = contracts_statusDetails.process_row(row, 67)
+		# print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}', end='')
+		line += f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}'
+		
+		res77 = awards_documents_documentTypeDetails.process_row(row, 68)
+		res78 = AwardSuppliers.process_row(row, 68)
+		res79 = awards_value_amount.process_row(row, 68)
+		res80 = awards_status.process_row(row, 68)
+		res81 = awards_statusDetails.process_row(row, 68)
+		# print(f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;{res81}', end='')
+		line += f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;{res81}'
 			
-		print('')
-		n_complaints = int(row[73])
+		res82 = tender_coveredBy.process_row(row, 69)
+		# print(f';;;{res82}', end='')
+		line += f';;;{res82}'
+
+		res83 = TenderNotifiedSuppliers.process_row(row, 70)
+		res84 = TenderTenderers.process_row(row, 70)
+		res85 = N5TenderItemsClass.process_row(row, 70)
+		res86 = N4TenderItemsClass.process_row(row, 70)
+		res87 = N3TenderItemsClass.process_row(row, 70)
+		res88 = N2TenderItemsClass.process_row(row, 70)
+		res89 = N1TenderItemsClass.process_row(row, 70)
+		res90 = N1_1TenderItemsClass.process_row(row, 70)
+		res96 = tender_criteria_id.process_row(row, 70)
+		res97 = tender_enquiries.process_row(row, 70)
+		res98 = tender_lots.process_row(row, 70)
+		res99 = TenderDocumentsDocumentTypeDetail.process_row(row, 70)
+
+		# print(f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90};;;{res96};;;{res97};;;{res98};;;{res99}', end='')
+		line += f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90};;;{res96};;;{res97};;;{res98};;;{res99}'
+
+		res91 = N4PlanningItemsClass.process_row(row, 71)
+		res92 = N3PlanningItemsClass.process_row(row, 71)
+		res93 = N2PlanningItemsClass.process_row(row, 71)
+		res94 = N1PlanningItemsClass.process_row(row, 71)
+		res95 = N1_1PlanningItemsClass.process_row(row, 71)
+		# print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
+		line += f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}'
+		
+		res100 = parties_details_entityType.process_row(row, 72)
+		res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
+		res102 = PartiesRoles.process_row(row, 72)
+		# print(f';;;{res100};;;{res101};;;{res102}', end='')
+		line += f';;;{res100};;;{res101};;;{res102}'
+			
+		line = line.replace("\n", " ")
+		print(line)
+
+		n_complaints = int(row[74])
 		for i in range(n_complaints - 1):
-			for i in range(67):
-				if i == 0:
-					print(row[i], end='')
-					pass
-				elif i < 67:  #(67 direct from db)
-					print(f';;;{row[i]}', end='')
-					pass
-			print(f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}', end='')
-			print(f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;;{res81}', end='')
-			print(f';;;{res82}', end='')
-			print(f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90}', end='')
-			print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95};;;{res96}', end='')
-			print('')
+			print(line)
 
 
 if __name__ == '__main__':
