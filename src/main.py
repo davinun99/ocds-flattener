@@ -215,9 +215,9 @@ FROM RECORD r join data d on d.id = r.data_id
 		res100 = parties_details_entityType.process_row(row, 72)
 		res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
 		res102 = PartiesRoles.process_row(row, 72)
-		# print(f';;;{res100};;;{res101};;;{res102}', end='')
-		line += f';;;{res100};;;{res101};;;{res102}'
-			
+		res103 = int(row[74]) > 0
+		# print(f';;;{res100};;;{res101};;;{res102};;;{res103}', end='')
+		line += f';;;{res100};;;{res101};;;{res102};;;{res103}'
 		line = line.replace("\n", " ")
 		print(line)
 
