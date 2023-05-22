@@ -81,11 +81,11 @@ class AwardSuppliers:
 						id = supplier['id']
 						supplier_ids.add(id)
 		for id in supplier_ids:
-			if id in first_quantile:
+			if id in self.first_quantile:
 				idArr[0] += 1
-			elif id in second_quantile:
+			elif id in self.second_quantile:
 				idArr[1] += 1
-			elif id in third_quantile:
+			elif id in self.third_quantile:
 				idArr[2] += 1
 			else:
 				idArr[3] += 1
