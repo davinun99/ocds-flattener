@@ -4,7 +4,7 @@ import helpers
 BATCH_SIZE = 1000
 QUERY_FILE_PATH = './Query.sql'
 
-guarantee_type_map = {
+guarantee_type_map_data = {
 	"fulfillment": 0,
 	"Endoso - Fiel Cumplimiento": 1,
 	"Endoso - Anticipo": 2,
@@ -25,15 +25,15 @@ guarantee_type_map = {
 	"Endoso - Fondo de Reparo": 17,
 }
 
-def process_row (row: tuple, colNumber: int) -> list:
+def process_row (row: tuple, colNumber: int):
 	countArr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	if row[colNumber]:
 		for contract in row[colNumber]:
 			if('guarantees' in contract):
 				for guarantee in contract['guarantees']:
-					ind = guarantee_type_map[guarantee['obligations']]
+					ind = guarantee_type_map_data[guarantee['obligations']]
 					countArr[ind] += 1
-	return countArr
+	return ";;;".join(map(str, countArr))
 
 def main(arguments):
 	query = """

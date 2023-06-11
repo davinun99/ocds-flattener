@@ -3,7 +3,7 @@ sys.path.append('./src')
 import helpers
 BATCH_SIZE = 1000
 
-map = {
+map_data = {
 	"Adjudicado": 0,
     "Confirmado Orden de Compra": 1,
     "Orden de compra recibida": 2,
@@ -13,14 +13,14 @@ map = {
 	"Cancelada de la Orden de Compra": 6,
 }
 
-def process_row (row: tuple, colNumber: int) -> list[int]:
-	countArr = [0] * len(list(map))
+def process_row (row: tuple, colNumber: int):
+	countArr = [0] * len(list(map_data))
 	if row[colNumber]:
 		for award in row[colNumber]:
 			if 'statusDetails' in award:
-				ind = map[award['statusDetails']]
+				ind = map_data[award['statusDetails']]
 				countArr[ind] += 1
-	return countArr
+	return ";;;".join(map(str, countArr))
 
 def main(arguments):
 	query = """

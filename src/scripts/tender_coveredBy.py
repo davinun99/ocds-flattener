@@ -3,7 +3,7 @@ sys.path.append('./src')
 import helpers
 BATCH_SIZE = 1000
 
-map = {
+map_data = {
 	"fonacide": 0,
 	"produccion_nacional": 1,
 	"urgencia_impostergable": 2,
@@ -14,14 +14,14 @@ map = {
 	"seguridad_nacional": 7,
 }
 
-def process_row (row: tuple, colNumber: int) -> list[int]:
-	countArr = [0] * len(list(map))
+def process_row (row: tuple, colNumber: int):
+	countArr = [0] * len(list(map_data))
 	if row[colNumber]:
 		if('coveredBy' in row[colNumber]):
 			for cover in row[colNumber]['coveredBy']:
-				ind = map[cover]
+				ind = map_data[cover]
 				countArr[ind] += 1
-	return countArr
+	return ";;;".join(map(str, countArr))
 
 def main(arguments):
 	query = """
