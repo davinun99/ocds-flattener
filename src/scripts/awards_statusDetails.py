@@ -11,6 +11,7 @@ map_data = {
     "Cancelado": 4,
 	"Vencida Orden de Compra": 5,
 	"Cancelada de la Orden de Compra": 6,
+	"Suspendido": 7,
 }
 
 def process_row (row: tuple, colNumber: int):

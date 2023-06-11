@@ -3,7 +3,7 @@ import psycopg2
 
 dbHost="localhost"
 dbPort=5432
-dbDatabase="kingfisher_mati"
+dbDatabase="kf2016"
 dbUser="postgres"
 dbPassword="postgres"
 con = None

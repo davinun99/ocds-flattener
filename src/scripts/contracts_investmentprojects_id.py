@@ -157,6 +157,28 @@ map_data = {
 	"753": 150,
 	"754": 151,
 	"154": 152,
+	"36": 153,
+	"561": 154,
+	"24": 155,
+	"566": 156,
+	"56": 157,
+	"233": 158,
+	"23": 159,
+	"127": 160,
+	"70": 161,
+	"444": 162,
+	"576": 163,
+	"10": 164,
+	"581": 165,
+	"123": 166,
+	"596": 167,
+	"47": 168,
+	"728": 169,
+	"76": 170,
+	"767": 171,
+	"311": 172,
+	"100": 173,
+	"557": 174,
 }
 
 def process_row (row: tuple, colNumber: int):
@@ -177,7 +199,7 @@ def main(arguments):
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
 	# for row in helpers.get_rows(query):
-	# 	idArr = process_row(row)
+	# 	idArr = process_row(row, 1)
 	# 	print(idArr)
 
 # if __name__ == '__main__':

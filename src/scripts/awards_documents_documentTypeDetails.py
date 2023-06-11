@@ -21,6 +21,10 @@ map_data = {
 	"Nota al Director": 14,
 	"Nota de Suspensión": 15,
 	"Nota Rechazo Solicitud de Cancelacion": 16,
+	"Nota de Contestacion Adjudicacion": 17,
+	"Nota de Contestacion Proveedor Adjudicado": 18,
+	"Nota de Observacion Adjudicacion": 19,
+	"Nota de Observación Proveedor Adjudicado": 20,
 }
 
 def process_row (row: tuple, colNumber: int):
