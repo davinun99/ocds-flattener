@@ -42,7 +42,7 @@ class N1_1TenderItemsClassification:
 						id = item['classification']['id'][0:2]
 						index = self.index_map[id]
 						idArr[index] += 1
-		return idArr
+		return ";;;".join(map(str, idArr))
 
 	def print_dict(self, file_name:str, dict: dict):
 		with open(f'__out/{file_name}', 'w') as f:
