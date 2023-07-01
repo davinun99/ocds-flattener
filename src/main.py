@@ -41,11 +41,31 @@ import col_scripts.parties_details_entityType as parties_details_entityType
 import col_scripts.parties_details_legalEntityTypeDetail as parties_details_legalEntityTypeDetail
 import col_scripts.parties_roles as parties_roles
 
+import quartiles_structured.tender_procurementMethodDetails as tender_procurementMethodDetails
+import quartiles_structured.tender_procuringEntity_id as tender_procuringEntity_id
+import quartiles_structured.tender_procuringEntity_name as tender_procuringEntity_name
+import quartiles_structured.tender_procurementIntention_procuringEntity_id as tender_procurementIntention_procuringEntity_id
+import quartiles_structured.tender_procurementIntention_procuringEntity_name as tender_procurementIntention_procuringEntity_name
+import quartiles_structured.buyer_id as buyer_id
+import quartiles_structured.buyer_name as buyer_name
+import quartiles_structured.secondStage_id as secondStage_id
+import quartiles_structured.tender_eligibilityCriteria as tender_eligibilityCriteria
+import quartiles_structured.tender_mainProcurementCategoryDetails as tender_mainProcurementCategoryDetails
+import quartiles_structured.tender_submissionMethodDetails as tender_submissionMethodDetails
+import quartiles_structured.tender_procurementIntention_category as tender_procurementIntention_category
+
 # function to print a name for every column when we are splitting a list column
 def obtain_column_names(column_title, amount):
 	result = ""
 	for i in range(1,amount+1):
 		result += column_title + "_" + str(i)
+	return result
+
+# function to the title 4 times for quartiles
+def name_to_quartiles(column_title):
+	result = ""
+	for i in range(1,5):
+		result += column_title + " q" + str(i)
 	return result
 
 def main(arguments):
@@ -125,7 +145,11 @@ SELECT
 	data['compiledRelease']['planning'] as "planning", --71
 	data['compiledRelease']['parties'] as "parties", --72
 	data['compiledRelease']['complaints'] as "complaints", --73
-	COALESCE(jsonb_array_length(data['compiledRelease']['complaints']), 0) as "complaints.count" --74
+	COALESCE(jsonb_array_length(data['compiledRelease']['complaints']), 0) as "complaints.count", --74
+
+	data['compiledRelease']['buyer'] as "buyer", --75
+	data['compiledRelease']['secondStage'] as "secondStage" --76
+
 FROM RECORD r join data d on d.id = r.data_id
 	"""
 	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count', end='')
@@ -134,7 +158,9 @@ FROM RECORD r join data d on d.id = r.data_id
 	print(obtain_column_names(';;;awards.status',3)+obtain_column_names(';;;awards.statusDetails',7)+obtain_column_names(';;;tender.coveredBy',8)+';;;tender.notifiedSuppliers.id q1;;;tender.notifiedSuppliers.id q2;;;tender.notifiedSuppliers.id q3;;;tender.notifiedSuppliers.id q4;;;tender.tenderers.id q1;;;tender.tenderers.id q2;;;tender.tenderers.id q3;;;tender.tenderers.id q4', end='')
 	print(';;;tender.items.classification.id.n5 q1;;;tender.items.classification.id.n5 q2;;;tender.items.classification.id.n5 q3;;;tender.items.classification.id.n5 q4;;;tender.items.classification.id.n4 q1;;;tender.items.classification.id.n4 q2;;;tender.items.classification.id.n4 q3;;;tender.items.classification.id.n4 q4;;;tender.items.classification.id.n3 q1;;;tender.items.classification.id.n3 q2;;;tender.items.classification.id.n3 q3;;;tender.items.classification.id.n3 q4'+obtain_column_names(';;;tender.items.classification.id.n2',20)+obtain_column_names(';;;tender.items.classification.id.n1',11)+obtain_column_names(';;;tender.items.classification.id.n1_1',57)+';;;tender.criteria.id;;;tender.enquiries total;;;tender.enquiries respondidos;;;tender.enquiries porcentaje;;;tender.lots'+obtain_column_names(';;;tender.documents.documentTypeDetails',13), end='')
 	print(';;;planning.items.classification.id.n4 q1;;;planning.items.classification.id.n4 q2;;;planning.items.classification.id.n4 q3;;;planning.items.classification.id.n4 q4;;;planning.items.classification.id.n3 q1;;;planning.items.classification.id.n3 q2;;;planning.items.classification.id.n3 q3;;;planning.items.classification.id.n3 q4'+obtain_column_names(';;;planning.items.classification.id.n2',44)+obtain_column_names(';;;planning.items.classification.id.n1',15)+obtain_column_names(';;;planning.items.classification.id.n1_1',57), end='')
-	print(obtain_column_names(';;;parties.details.EntityType candidate',4)+obtain_column_names(';;;parties.details.EntityType enquirer',4)+obtain_column_names(';;;parties.details.EntityType payer',4)+obtain_column_names(';;;parties.details.EntityType payee',4)+obtain_column_names(';;;parties.details.EntityType supplier',4)+obtain_column_names(';;;parties.details.EntityType procuringEntity',4)+obtain_column_names(';;;parties.details.EntityType buyer',4)+obtain_column_names(';;;parties.details.EntityType tenderer',4)+obtain_column_names(';;;parties.details.EntityType notifiedSupplier',4)+obtain_column_names(';;;parties.details.legalEntityTypeDetail candidate',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail enquirer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payee',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail supplier',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail procuringEntity',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail buyer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail tenderer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail notifiedSupplier',23)+';;;parties.roles candidate q1;;;parties.roles candidate q2;;;parties.roles candidate q3;;;parties.roles candidate q4;;;parties.roles enquirer q1;;;parties.roles enquirer q2;;;parties.roles enquirer q3;;;parties.roles enquirer q4;;;parties.roles payer q1;;;parties.roles payer q2;;;parties.roles payer q3;;;parties.roles payer q4;;;parties.roles payee q1;;;parties.roles payee q2;;;parties.roles payee q3;;;parties.roles payee q4;;;parties.roles supplier q1;;;parties.roles supplier q2;;;parties.roles supplier q3;;;parties.roles supplier q4;;;parties.roles procuringEntity q1;;;parties.roles procuringEntity q2;;;parties.roles procuringEntity q3;;;parties.roles procuringEntity q4;;;parties.roles buyer q1;;;parties.roles buyer q2;;;parties.roles buyer q3;;;parties.roles buyer q4;;;parties.roles tenderer q1;;;parties.roles tenderer q2;;;parties.roles tenderer q3;;;parties.roles tenderer q4;;;parties.roles notifiedSupplier q1;;;parties.roles notifiedSupplier q2;;;parties.roles notifiedSupplier q3;;;parties.roles notifiedSupplier q4;;;has_complaint')
+	print(obtain_column_names(';;;parties.details.EntityType candidate',4)+obtain_column_names(';;;parties.details.EntityType enquirer',4)+obtain_column_names(';;;parties.details.EntityType payer',4)+obtain_column_names(';;;parties.details.EntityType payee',4)+obtain_column_names(';;;parties.details.EntityType supplier',4)+obtain_column_names(';;;parties.details.EntityType procuringEntity',4)+obtain_column_names(';;;parties.details.EntityType buyer',4)+obtain_column_names(';;;parties.details.EntityType tenderer',4)+obtain_column_names(';;;parties.details.EntityType notifiedSupplier',4)+obtain_column_names(';;;parties.details.legalEntityTypeDetail candidate',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail enquirer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payee',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail supplier',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail procuringEntity',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail buyer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail tenderer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail notifiedSupplier',23)+';;;parties.roles candidate q1;;;parties.roles candidate q2;;;parties.roles candidate q3;;;parties.roles candidate q4;;;parties.roles enquirer q1;;;parties.roles enquirer q2;;;parties.roles enquirer q3;;;parties.roles enquirer q4;;;parties.roles payer q1;;;parties.roles payer q2;;;parties.roles payer q3;;;parties.roles payer q4;;;parties.roles payee q1;;;parties.roles payee q2;;;parties.roles payee q3;;;parties.roles payee q4;;;parties.roles supplier q1;;;parties.roles supplier q2;;;parties.roles supplier q3;;;parties.roles supplier q4;;;parties.roles procuringEntity q1;;;parties.roles procuringEntity q2;;;parties.roles procuringEntity q3;;;parties.roles procuringEntity q4;;;parties.roles buyer q1;;;parties.roles buyer q2;;;parties.roles buyer q3;;;parties.roles buyer q4;;;parties.roles tenderer q1;;;parties.roles tenderer q2;;;parties.roles tenderer q3;;;parties.roles tenderer q4;;;parties.roles notifiedSupplier q1;;;parties.roles notifiedSupplier q2;;;parties.roles notifiedSupplier q3;;;parties.roles notifiedSupplier q4', end='')
+	print(name_to_quartiles(';;;tender.procurementMethodDetails')+name_to_quartiles(';;;tender.procuringEntity.id')+name_to_quartiles(';;;tender.procuringEntity.name')+name_to_quartiles(';;;tender.procurementIntention.procuringEntity.id')+name_to_quartiles(';;;tender.procurementIntention.procuringEntity.name')+name_to_quartiles(';;;buyer.id')+name_to_quartiles(';;;buyer.name')+name_to_quartiles(';;;secondStage.id')+name_to_quartiles(';;;tender.eligibilityCriteria')+name_to_quartiles(';;;tender.mainProcurementCategoryDetails')+name_to_quartiles(';;;tender.submissionMethodDetails'), end='')
+	print(';;;has_complaint')
 
 	rows = helpers.get_rows(query)
 	AwardSuppliers = awards_suppliers_id.AwardSuppliers(rows, 68)
@@ -153,6 +179,18 @@ FROM RECORD r join data d on d.id = r.data_id
 	N1PlanningItemsClass = N1_planning_items_classification_id.N1PlanningItemsClassification(rows, 71)
 	N1_1PlanningItemsClass = N1_1_planning_items_classification_id.N1_1PlanningItemsClassification(rows, 71)
 	PartiesRoles = parties_roles.PartiesRoles(rows, 72)
+	TenderProcurementMethodDetails = tender_procurementMethodDetails.TenderProcurementMethodDetails(rows, 70)
+	TenderProcuringEntityId = tender_procuringEntity_id.TenderProcuringEntityId(rows, 70)
+	TenderProcuringEntityName = tender_procuringEntity_name.TenderProcuringEntityName(rows, 70)
+	TenderProcurementIntentionProcuringEntityId = tender_procurementIntention_procuringEntity_id.TenderProcurementIntentionProcuringEntityId(rows, 70)
+	TenderProcurementIntentionProcuringEntityName = tender_procurementIntention_procuringEntity_name.TenderProcurementIntentionProcuringEntityName(rows, 70)
+	BuyerId = buyer_id.BuyerId(rows, 75)
+	BuyerName = buyer_name.BuyerName(rows, 75)
+	SecondStageId = secondStage_id.SecondStageId(rows, 76)
+	TenderEligibilityCriteria = tender_eligibilityCriteria.TenderEligibilityCriteria(rows, 70)
+	TenderMainProcurementCategoryDetails = tender_mainProcurementCategoryDetails.TenderMainProcurementCategoryDetails(rows, 70)
+	TendersubmissionMethodDetails = tender_submissionMethodDetails.TendersubmissionMethodDetails(rows, 70)
+	TenderProcurementIntentionCategory = tender_procurementIntention_category.TenderProcurementIntentionCategory(rows, 70)
 	
 	for row in rows:
 		# idArr = process_row(row)
@@ -222,9 +260,26 @@ FROM RECORD r join data d on d.id = r.data_id
 		res100 = parties_details_entityType.process_row(row, 72)
 		res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
 		res102 = PartiesRoles.process_row(row, 72)
-		res103 = int(row[74]) > 0
 		# print(f';;;{res100};;;{res101};;;{res102};;;{res103}', end='')
-		line += f';;;{res100};;;{res101};;;{res102};;;{res103}'
+		line += f';;;{res100};;;{res101};;;{res102}'
+
+		res104 = TenderProcurementMethodDetails.process_row(row, 70)
+		res105 = TenderProcuringEntityId.process_row(row, 70)
+		res106 = TenderProcuringEntityName.process_row(row, 70)
+		res107 = TenderProcurementIntentionProcuringEntityId.process_row(row, 70)
+		res108 = TenderProcurementIntentionProcuringEntityName.process_row(row, 70)
+		res109 = BuyerId.process_row(row, 75)
+		res110 = BuyerName.process_row(row, 75)
+		res111 = SecondStageId.process_row(row, 76)
+		res112 = TenderEligibilityCriteria.process_row(row, 70)
+		res113 = TenderMainProcurementCategoryDetails.process_row(row, 70)
+		res114 = TendersubmissionMethodDetails.process_row(row, 70)
+		res115 = TenderProcurementIntentionCategory.process_row(row, 70)
+		line += f';;;{res104};;;{res105};;;{res106};;;{res107};;;{res108};;;{res109};;;{res110};;;{res111};;;{res112};;;{res113};;;{res114};;;{res115}'
+
+		res103 = int(row[74]) > 0 # CAMBIAR AL ÚLTIMO ESTA COLUMNA PORQUE ES LA COLUMNA OBJETIVO
+		line += f';;;{res103}'
+
 		line = line.replace("\n", " ")
 		print(line)
 
