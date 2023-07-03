@@ -21,4 +21,5 @@ def process_row (row: tuple, colNumber: int):
 		for cover in row[colNumber]:
 			ind = map_data[cover]
 			countArr[ind] += 1
-	return countArr
+	# return countArr
+	return ";;;".join(map(str, countArr))
