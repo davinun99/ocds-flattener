@@ -3,7 +3,7 @@ sys.path.append('./src')
 import helpers
 BATCH_SIZE = 1000
 
-map = {
+map_data = {
 	"769": 0,
 	"109": 1,
 	"773": 2,
@@ -157,17 +157,39 @@ map = {
 	"753": 150,
 	"754": 151,
 	"154": 152,
+	"36": 153,
+	"561": 154,
+	"24": 155,
+	"566": 156,
+	"56": 157,
+	"233": 158,
+	"23": 159,
+	"127": 160,
+	"70": 161,
+	"444": 162,
+	"576": 163,
+	"10": 164,
+	"581": 165,
+	"123": 166,
+	"596": 167,
+	"47": 168,
+	"728": 169,
+	"76": 170,
+	"767": 171,
+	"311": 172,
+	"100": 173,
+	"557": 174,
 }
 
-def process_row (row: tuple, colNumber: int) -> list[int]:
-	countArr = [0] * len(list(map))
+def process_row (row: tuple, colNumber: int):
+	countArr = [0] * len(list(map_data))
 	if row[colNumber]:
 		for contract in row[colNumber]:
 			if('investmentProjects' in contract):
 				for investmentProject in contract['investmentProjects']:
-					ind = map[investmentProject['id']]
+					ind = map_data[investmentProject['id']]
 					countArr[ind] += 1
-	return countArr
+	return ";;;".join(map(str, countArr))
 
 def main(arguments):
 	query = """
@@ -177,7 +199,7 @@ def main(arguments):
 		FROM RECORD r join data d on d.id = r.data_id
 	"""
 	# for row in helpers.get_rows(query):
-	# 	idArr = process_row(row)
+	# 	idArr = process_row(row, 1)
 	# 	print(idArr)
 
 # if __name__ == '__main__':

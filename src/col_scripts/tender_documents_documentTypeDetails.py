@@ -68,9 +68,9 @@ class TenderDocumentsDocumentTypeDetail:
                             count_array[self.values_map.index(valor)] += 1
                         else:
                             count_array[-1] += 1
-            return count_array
+            return ";;;".join(map(str, count_array))
         else:
-            return count_array_bk
+            return ";;;".join(map(str, count_array_bk))
 
     def __init__(self, rows: list[tuple], colNumber: int):
         pd.set_option('display.max_columns', None)

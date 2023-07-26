@@ -24,11 +24,11 @@ def process_row (row: tuple, colNumber: int) -> str:
                             if 'legalEntityTypeDetail' in detail:
                                 count_array[values_map.index(detail['legalEntityTypeDetail'])] += 1    
             # cada llamado diferente será una fila y cada rol diferente en el llamado es una columna de esa fila
-            return_string += "{};;;".format(count_array)
+            return_string += ";;;".join(map(str, count_array)) + ";;;"
             count_array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     else:
         for rol in roles:
-            return_string += "{};;;".format([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+            return_string += "{};;;".format(";;;0"*len(count_array))
             
     # quitamos los ;;; de más antes de retornar
     return return_string[:-3]

@@ -54,7 +54,7 @@ class N3TenderItemsClassification:
 							idArr[2] += 1
 						else:
 							idArr[3] += 1
-		return idArr
+		return ";;;".join(map(str, idArr))
 
 	def print_dict(self, file_name:str, dict: dict):
 		with open(f'__out/{file_name}', 'w') as f:

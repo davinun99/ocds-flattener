@@ -99,10 +99,10 @@ class PartiesRoles:
                                 quartiles[3] += 1
             # cada llamado diferente será una fila y cada rol diferente en el llamado es una columna de esa fila
             if quartiles != [0,0,0,0]:
-                return_string += "{};;;".format(quartiles)
+                return_string += ";;;".join(map(str, quartiles)) + ";;;"
                 quartiles = [0,0,0,0].copy()
             else:
-                return_string += "{};;;".format([0,0,0,0])
+                return_string += "{}".format("0;;;0;;;0;;;0;;;")
              
         # quitamos los ;;; de más antes de retornar
         return return_string[:-3]   
