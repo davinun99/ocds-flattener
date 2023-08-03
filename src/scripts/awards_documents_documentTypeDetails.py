@@ -24,6 +24,7 @@ map_data = {
 	"Nota de Contestacion Adjudicacion": 17,
 	"Nota de Contestacion Proveedor Adjudicado": 18,
 	"Nota de Observación Proveedor Adjudicado": 19,
+	"Nota de Aclaración": 20,
 }
 
 def process_row (row: tuple, colNumber: int):
@@ -33,8 +34,14 @@ def process_row (row: tuple, colNumber: int):
 			if('documents' in award):
 				for document in award['documents']:
 					if 'documentTypeDetails' in document:
-						ind = map_data[document['documentTypeDetails']]
-						countArr[ind] += 1
+						try:
+							ind = map_data[document['documentTypeDetails']]
+							countArr[ind] += 1
+						except Exception as e:
+							print('Exception:: ')
+							print(e)
+							print(e.with_traceback(None))
+						
 	return ";;;".join(map(str, countArr))
 
 def main(arguments):

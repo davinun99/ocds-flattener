@@ -7,6 +7,7 @@ map_data = {
 	"active": 0,
 	"cancelled": 1,
 	"pending": 2,
+	"unsuccessful": 3,
 }
 
 def process_row (row: tuple, colNumber: int):

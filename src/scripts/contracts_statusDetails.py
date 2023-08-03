@@ -12,6 +12,7 @@ map_data = {
     "Cancelada de la Orden de Compra": 5,
     "Vencida Orden de Compra": 6,
     "Suspendido": 7,
+    "Anulado": 8,
 }
 
 def process_row (row: tuple, colNumber: int):
@@ -19,8 +20,13 @@ def process_row (row: tuple, colNumber: int):
 	if row[colNumber]:
 		for contract in row[colNumber]:
 			if('statusDetails' in contract):
-				ind = map_data[contract['statusDetails']]
-				countArr[ind] += 1
+				try:
+					ind = map_data[contract['statusDetails']]
+					countArr[ind] += 1
+				except Exception as e:
+					print('Exception:: ')
+					print(e)
+					print(e.with_traceback(None))
 	return ";;;".join(map(str, countArr))
 
 def main(arguments):
