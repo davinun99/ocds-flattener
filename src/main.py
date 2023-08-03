@@ -154,10 +154,10 @@ FROM RECORD r join data d on d.id = r.data_id
 	print(f'ocid;;;id;;;tender.id;;;tender.title;;;tender.status;;;tender.awardCriteria;;;tender.awardCriteriaDetails;;;tender.bidOpening.date;;;tender.bidOpening.address.streetAddress;;;tender.submissionMethodDetails;;;tender.eligibilityCriteria;;;tender.statusDetails;;;tender.enquiriesAddress.streetAddress;;;tender.mainProcurementCategoryDetails;;;tender.hasEnquiries;;;tender.value.amount;;;tender.value.currency;;;tender.datePublished;;;tender.tenderPeriod.startDate;;;tender.tenderPeriod.endDate;;;tender.tenderPeriod.durationInDays;;;tender.awardPeriod.startDate;;;tender.enquiryPeriod.endDate;;;tender.enquiryPeriod.startDate;;;tender.enquiryPeriod.durationInDays;;;tender.mainProcurementCategory;;;tender.procurementMethod;;;tender.procurementMethodDetails;;;tender.procuringEntity.id;;;tender.procuringEntity.name;;;tender.numberOfTenderers;;;language;;;ocid;;;date;;;initiationType;;;buyer.id;;;buyer.name;;;planning.identifier;;;planning.estimatedDate;;;planning.budget.description;;;planning.budget.amount.currency;;;planning.budget.amount.amount;;;tag;;;tender.techniques.hasElectronicAuction;;;tender.contractPeriod.durationInDays;;;tender.contractPeriod.maxExtentDate;;;tender.procurementMethodRationale;;;tender.procurementIntention.id;;;tender.procurementIntention.uri;;;tender.procurementIntention.rationale;;;tender.procurementIntention.category;;;tender.procurementIntention.title;;;tender.procurementIntention.description;;;tender.procurementIntention.startDate;;;tender.procurementIntention.publishedDate;;;tender.procurementIntention.procuringEntity.id;;;tender.procurementIntention.procuringEntity.name;;;tender.procurementIntention.status;;;tender.procurementIntention.statusDetails;;;secondStage.id;;;tender.techniques.hasFrameworkAgreement;;;tender.contractPeriod.startDate;;;tender.contractPeriod.endDate;;;tender.lots.count;;;tender.enquiries.count;;;awards.count;;;contracts.count', end='')
 	print(obtain_column_names(';;;contracts.guarantees.obligations',18)+name_to_quartiles(';;;contracts.investmentProjects.id')+';;;contracts.amendments.amendsAmount_pyg;;;contracts.amendments.amendsAmount_usd;;;contracts.amendments.count;;;contracts.implementation.purchaseOrders.count;;;contracts.implementation.transactions.count'+obtain_column_names(';;;contracts.documents.DocumentTypeDetails',12), end='')
 	print(';;;contracts.value.amount_pyg;;;contracts.value.amount_usd'+obtain_column_names(';;;contracts.status',4)+obtain_column_names(';;;contracts.statusDetails',9)+obtain_column_names(';;;awards.documents.DocumentTypeDetails',21)+';;;awards.suppliers.id q1;;;awards.suppliers.id q2;;;awards.suppliers.id q3;;;awards.suppliers.id q4;;;awards.value.amount_pyg;;;awards.value.amount_usd', end='')
-	print(obtain_column_names(';;;awards.status',4)+obtain_column_names(';;;awards.statusDetails',10)+obtain_column_names(';;;tender.coveredBy',8)+';;;tender.notifiedSuppliers.id q1;;;tender.notifiedSuppliers.id q2;;;tender.notifiedSuppliers.id q3;;;tender.notifiedSuppliers.id q4;;;tender.tenderers.id q1;;;tender.tenderers.id q2;;;tender.tenderers.id q3;;;tender.tenderers.id q4', end='')
+	print(obtain_column_names(';;;awards.status',4)+obtain_column_names(';;;awards.statusDetails',11)+obtain_column_names(';;;tender.coveredBy',8)+';;;tender.notifiedSuppliers.id q1;;;tender.notifiedSuppliers.id q2;;;tender.notifiedSuppliers.id q3;;;tender.notifiedSuppliers.id q4;;;tender.tenderers.id q1;;;tender.tenderers.id q2;;;tender.tenderers.id q3;;;tender.tenderers.id q4', end='')
 	print(';;;tender.items.classification.id.n5 q1;;;tender.items.classification.id.n5 q2;;;tender.items.classification.id.n5 q3;;;tender.items.classification.id.n5 q4;;;tender.items.classification.id.n4 q1;;;tender.items.classification.id.n4 q2;;;tender.items.classification.id.n4 q3;;;tender.items.classification.id.n4 q4;;;tender.items.classification.id.n3 q1;;;tender.items.classification.id.n3 q2;;;tender.items.classification.id.n3 q3;;;tender.items.classification.id.n3 q4'+obtain_column_names(';;;tender.items.classification.id.n2',20)+obtain_column_names(';;;tender.items.classification.id.n1',11)+obtain_column_names(';;;tender.items.classification.id.n1_1',57)+';;;tender.criteria.id;;;tender.enquiries total;;;tender.enquiries respondidos;;;tender.enquiries porcentaje;;;tender.lots'+obtain_column_names(';;;tender.documents.documentTypeDetails',13), end='')
 	print(';;;planning.items.classification.id.n4 q1;;;planning.items.classification.id.n4 q2;;;planning.items.classification.id.n4 q3;;;planning.items.classification.id.n4 q4;;;planning.items.classification.id.n3 q1;;;planning.items.classification.id.n3 q2;;;planning.items.classification.id.n3 q3;;;planning.items.classification.id.n3 q4'+obtain_column_names(';;;planning.items.classification.id.n2',44)+obtain_column_names(';;;planning.items.classification.id.n1',15)+obtain_column_names(';;;planning.items.classification.id.n1_1',57), end='')
-	print(obtain_column_names(';;;parties.details.EntityType candidate',4)+obtain_column_names(';;;parties.details.EntityType enquirer',4)+obtain_column_names(';;;parties.details.EntityType payer',4)+obtain_column_names(';;;parties.details.EntityType payee',4)+obtain_column_names(';;;parties.details.EntityType supplier',4)+obtain_column_names(';;;parties.details.EntityType procuringEntity',4)+obtain_column_names(';;;parties.details.EntityType buyer',4)+obtain_column_names(';;;parties.details.EntityType tenderer',4)+obtain_column_names(';;;parties.details.EntityType notifiedSupplier',4)+obtain_column_names(';;;parties.details.legalEntityTypeDetail candidate',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail enquirer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payee',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail supplier',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail procuringEntity',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail buyer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail tenderer',23)+obtain_column_names(';;;parties.details.legalEntityTypeDetail notifiedSupplier',23)+';;;parties.roles candidate q1;;;parties.roles candidate q2;;;parties.roles candidate q3;;;parties.roles candidate q4;;;parties.roles enquirer q1;;;parties.roles enquirer q2;;;parties.roles enquirer q3;;;parties.roles enquirer q4;;;parties.roles payer q1;;;parties.roles payer q2;;;parties.roles payer q3;;;parties.roles payer q4;;;parties.roles payee q1;;;parties.roles payee q2;;;parties.roles payee q3;;;parties.roles payee q4;;;parties.roles supplier q1;;;parties.roles supplier q2;;;parties.roles supplier q3;;;parties.roles supplier q4;;;parties.roles procuringEntity q1;;;parties.roles procuringEntity q2;;;parties.roles procuringEntity q3;;;parties.roles procuringEntity q4;;;parties.roles buyer q1;;;parties.roles buyer q2;;;parties.roles buyer q3;;;parties.roles buyer q4;;;parties.roles tenderer q1;;;parties.roles tenderer q2;;;parties.roles tenderer q3;;;parties.roles tenderer q4;;;parties.roles notifiedSupplier q1;;;parties.roles notifiedSupplier q2;;;parties.roles notifiedSupplier q3;;;parties.roles notifiedSupplier q4', end='')
+	print(obtain_column_names(';;;parties.details.EntityType candidate',4)+obtain_column_names(';;;parties.details.EntityType enquirer',4)+obtain_column_names(';;;parties.details.EntityType payer',4)+obtain_column_names(';;;parties.details.EntityType payee',4)+obtain_column_names(';;;parties.details.EntityType supplier',4)+obtain_column_names(';;;parties.details.EntityType procuringEntity',4)+obtain_column_names(';;;parties.details.EntityType buyer',4)+obtain_column_names(';;;parties.details.EntityType tenderer',4)+obtain_column_names(';;;parties.details.EntityType notifiedSupplier',4)+obtain_column_names(';;;parties.details.legalEntityTypeDetail candidate',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail enquirer',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payer',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail payee',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail supplier',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail procuringEntity',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail buyer',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail tenderer',24)+obtain_column_names(';;;parties.details.legalEntityTypeDetail notifiedSupplier',24)+';;;parties.roles candidate q1;;;parties.roles candidate q2;;;parties.roles candidate q3;;;parties.roles candidate q4;;;parties.roles enquirer q1;;;parties.roles enquirer q2;;;parties.roles enquirer q3;;;parties.roles enquirer q4;;;parties.roles payer q1;;;parties.roles payer q2;;;parties.roles payer q3;;;parties.roles payer q4;;;parties.roles payee q1;;;parties.roles payee q2;;;parties.roles payee q3;;;parties.roles payee q4;;;parties.roles supplier q1;;;parties.roles supplier q2;;;parties.roles supplier q3;;;parties.roles supplier q4;;;parties.roles procuringEntity q1;;;parties.roles procuringEntity q2;;;parties.roles procuringEntity q3;;;parties.roles procuringEntity q4;;;parties.roles buyer q1;;;parties.roles buyer q2;;;parties.roles buyer q3;;;parties.roles buyer q4;;;parties.roles tenderer q1;;;parties.roles tenderer q2;;;parties.roles tenderer q3;;;parties.roles tenderer q4;;;parties.roles notifiedSupplier q1;;;parties.roles notifiedSupplier q2;;;parties.roles notifiedSupplier q3;;;parties.roles notifiedSupplier q4', end='')
 	print(name_to_quartiles(';;;tender.procurementMethodDetails')+name_to_quartiles(';;;tender.procuringEntity.id')+name_to_quartiles(';;;tender.procuringEntity.name')+name_to_quartiles(';;;tender.procurementIntention.procuringEntity.id')+name_to_quartiles(';;;tender.procurementIntention.procuringEntity.name')+name_to_quartiles(';;;buyer.id')+name_to_quartiles(';;;buyer.name')+name_to_quartiles(';;;secondStage.id')+name_to_quartiles(';;;tender.eligibilityCriteria')+name_to_quartiles(';;;tender.mainProcurementCategoryDetails')+name_to_quartiles(';;;tender.submissionMethodDetails')+name_to_quartiles(';;;tender.ProcurementIntentionCategory'), end='')
 	print(';;;has_complaint')
 
@@ -194,85 +194,90 @@ FROM RECORD r join data d on d.id = r.data_id
 	
 	for row in rows:
 		line = ''
-		for i in range(67):
-			if i == 0:
-				line += row[i]
-				pass
-			elif i < 67:  #(67 direct from db)
-				if i == 3 or i == 39: # tender title and budget description
-					line += f';;;"{row[i]}"'
-				else:
-					line += f';;;{row[i]}'
-			## PROCESS SOME ROWS
-		res67 = guarantees_obligations.process_row(row, 67)
-		res68 = InvestmentProjectsId.process_row(row, 67)
-		res69 = contracts_amendments_amendsAmount.process_row(row, 67)
-		res70 = contracts_amendments_count.process_row(row, 67)
-		res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
-		res72 = contracts_implementation_transactions_count.process_row(row, 67)
-		res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
-		res74 = contracts_value_amount.process_row(row, 67)
-		res75 = contracts_status.process_row(row, 67)
-		res76 = contracts_statusDetails.process_row(row, 67)
-		line += f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}'
-		
-		res77 = awards_documents_documentTypeDetails.process_row(row, 68)
-		res78 = AwardSuppliers.process_row(row, 68)
-		res79 = awards_value_amount.process_row(row, 68)
-		res80 = awards_status.process_row(row, 68)
-		res81 = awards_statusDetails.process_row(row, 68)
-		line += f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;{res81}'
+		try:
+			for i in range(67):
+				if i == 0:
+					line += row[i]
+					pass
+				elif i < 67:  #(67 direct from db)
+					if i == 3 or i == 39: # tender title and budget description
+						line += f';;;"{row[i]}"'
+					else:
+						line += f';;;{row[i]}'
+				## PROCESS SOME ROWS
+			res67 = guarantees_obligations.process_row(row, 67)
+			res68 = InvestmentProjectsId.process_row(row, 67)
+			res69 = contracts_amendments_amendsAmount.process_row(row, 67)
+			res70 = contracts_amendments_count.process_row(row, 67)
+			res71 = contracts_implementation_purchaseOrders_count.process_row(row, 67)
+			res72 = contracts_implementation_transactions_count.process_row(row, 67)
+			res73 = contracts_documents_DocumentTypeDetails.process_row(row, 67)
+			res74 = contracts_value_amount.process_row(row, 67)
+			res75 = contracts_status.process_row(row, 67)
+			res76 = contracts_statusDetails.process_row(row, 67)
+			line += f';;;{res67};;;{res68};;;{res69[0]};;;{res69[1]};;;{res70};;;{res71};;;{res72};;;{res73};;;{res74[0]};;;{res74[1]};;;{res75};;;{res76}'
 			
-		res82 = tender_coveredBy.process_row(row, 69)
-		line += f';;;{res82}'
+			res77 = awards_documents_documentTypeDetails.process_row(row, 68)
+			res78 = AwardSuppliers.process_row(row, 68)
+			res79 = awards_value_amount.process_row(row, 68)
+			res80 = awards_status.process_row(row, 68)
+			res81 = awards_statusDetails.process_row(row, 68)
+			line += f';;;{res77};;;{res78};;;{res79[0]};;;{res79[1]};;;{res80};;;{res81}'
+				
+			res82 = tender_coveredBy.process_row(row, 69)
+			line += f';;;{res82}'
 
-		res83 = TenderNotifiedSuppliers.process_row(row, 70)
-		res84 = TenderTenderers.process_row(row, 70)
-		res85 = N5TenderItemsClass.process_row(row, 70)
-		res86 = N4TenderItemsClass.process_row(row, 70)
-		res87 = N3TenderItemsClass.process_row(row, 70)
-		res88 = N2TenderItemsClass.process_row(row, 70)
-		res89 = N1TenderItemsClass.process_row(row, 70)
-		res90 = N1_1TenderItemsClass.process_row(row, 70)
-		res96 = tender_criteria_id.process_row(row, 70)
-		res97 = tender_enquiries.process_row(row, 70)
-		res98 = tender_lots.process_row(row, 70)
-		res99 = TenderDocumentsDocumentTypeDetail.process_row(row, 70)
+			res83 = TenderNotifiedSuppliers.process_row(row, 70)
+			res84 = TenderTenderers.process_row(row, 70)
+			res85 = N5TenderItemsClass.process_row(row, 70)
+			res86 = N4TenderItemsClass.process_row(row, 70)
+			res87 = N3TenderItemsClass.process_row(row, 70)
+			res88 = N2TenderItemsClass.process_row(row, 70)
+			res89 = N1TenderItemsClass.process_row(row, 70)
+			res90 = N1_1TenderItemsClass.process_row(row, 70)
+			res96 = tender_criteria_id.process_row(row, 70)
+			res97 = tender_enquiries.process_row(row, 70)
+			res98 = tender_lots.process_row(row, 70)
+			res99 = TenderDocumentsDocumentTypeDetail.process_row(row, 70)
 
-		line += f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90};;;{res96};;;{res97};;;{res98};;;{res99}'
+			line += f';;;{res83};;;{res84};;;{res85};;;{res86};;;{res87};;;{res88};;;{res89};;;{res90};;;{res96};;;{res97};;;{res98};;;{res99}'
 
-		res91 = N4PlanningItemsClass.process_row(row, 71)
-		res92 = N3PlanningItemsClass.process_row(row, 71)
-		res93 = N2PlanningItemsClass.process_row(row, 71)
-		res94 = N1PlanningItemsClass.process_row(row, 71)
-		res95 = N1_1PlanningItemsClass.process_row(row, 71)
-		# print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
-		line += f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}'
-		
-		res100 = parties_details_entityType.process_row(row, 72)
-		res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
-		res102 = PartiesRoles.process_row(row, 72)
-		# print(f';;;{res100};;;{res101};;;{res102};;;{res103}', end='')
-		line += f';;;{res100};;;{res101};;;{res102}'
+			res91 = N4PlanningItemsClass.process_row(row, 71)
+			res92 = N3PlanningItemsClass.process_row(row, 71)
+			res93 = N2PlanningItemsClass.process_row(row, 71)
+			res94 = N1PlanningItemsClass.process_row(row, 71)
+			res95 = N1_1PlanningItemsClass.process_row(row, 71)
+			# print(f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}', end='')
+			line += f';;;{res91};;;{res92};;;{res93};;;{res94};;;{res95}'
+			
+			res100 = parties_details_entityType.process_row(row, 72)
+			res101 = parties_details_legalEntityTypeDetail.process_row(row, 72)
+			res102 = PartiesRoles.process_row(row, 72)
+			# print(f';;;{res100};;;{res101};;;{res102};;;{res103}', end='')
+			line += f';;;{res100};;;{res101};;;{res102}'
 
-		res104 = TenderProcurementMethodDetails.process_row(row, 70)
-		res105 = TenderProcuringEntityId.process_row(row, 70)
-		res106 = TenderProcuringEntityName.process_row(row, 70)
-		res107 = TenderProcurementIntentionProcuringEntityId.process_row(row, 70)
-		res108 = TenderProcurementIntentionProcuringEntityName.process_row(row, 70)
-		res109 = BuyerId.process_row(row, 75)
-		res110 = BuyerName.process_row(row, 75)
-		res111 = SecondStageId.process_row(row, 76)
-		res112 = TenderEligibilityCriteria.process_row(row, 70)
-		res113 = TenderMainProcurementCategoryDetails.process_row(row, 70)
-		res114 = TendersubmissionMethodDetails.process_row(row, 70)
-		res115 = TenderProcurementIntentionCategory.process_row(row, 70)
-		line += f';;;{res104};;;{res105};;;{res106};;;{res107};;;{res108};;;{res109};;;{res110};;;{res111};;;{res112};;;{res113};;;{res114};;;{res115}'
+			res104 = TenderProcurementMethodDetails.process_row(row, 70)
+			res105 = TenderProcuringEntityId.process_row(row, 70)
+			res106 = TenderProcuringEntityName.process_row(row, 70)
+			res107 = TenderProcurementIntentionProcuringEntityId.process_row(row, 70)
+			res108 = TenderProcurementIntentionProcuringEntityName.process_row(row, 70)
+			res109 = BuyerId.process_row(row, 75)
+			res110 = BuyerName.process_row(row, 75)
+			res111 = SecondStageId.process_row(row, 76)
+			res112 = TenderEligibilityCriteria.process_row(row, 70)
+			res113 = TenderMainProcurementCategoryDetails.process_row(row, 70)
+			res114 = TendersubmissionMethodDetails.process_row(row, 70)
+			res115 = TenderProcurementIntentionCategory.process_row(row, 70)
+			line += f';;;{res104};;;{res105};;;{res106};;;{res107};;;{res108};;;{res109};;;{res110};;;{res111};;;{res112};;;{res113};;;{res114};;;{res115}'
 
-		res103 = int(row[74]) > 0 # CAMBIAR AL ÚLTIMO ESTA COLUMNA PORQUE ES LA COLUMNA OBJETIVO
-		line += f';;;{res103}'
+			res103 = int(row[74]) > 0 # CAMBIAR AL ÚLTIMO ESTA COLUMNA PORQUE ES LA COLUMNA OBJETIVO
+			line += f';;;{res103}'
 
-		line = line.replace("\n", " ")
+			line = line.replace("\n", " ")
+		except Exception as ex:
+			print('Exception:', ex)
+			print(ex.with_traceback(None))
+
 		print(line)
 
 		n_complaints = int(row[74])

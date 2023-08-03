@@ -14,6 +14,7 @@ map_data = {
 	"Suspendido": 7,
 	"Anulado": 8,
 	"Provisorio de la Orden de Compra": 9,
+	"Notificado de la Orden de Compra": 10,
 }
 
 def process_row (row: tuple, colNumber: int):

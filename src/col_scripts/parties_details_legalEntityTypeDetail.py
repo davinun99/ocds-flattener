@@ -2,13 +2,12 @@ import sys
 sys.path.append('./src')
 
 # vector para mapear los posibles valores que puede tomar la futura columna
-values_map = ['Persona Física - Bienes y Servicios', 'Persona Física - Servicios Personales', 'S.A.', 'S.R.L.', 'S.A.C.I.', 'S.A.E.C.A.', 'Consorcio', 'Otros', 'S.A.I.C.', 'S.A.C.', 'Sociedad Simple', 'S.A.E.', 'C.I.S.A.', 'Sociedad Civil', 'E.I.R.L.', 'Cooperativas', 'Extranjeras', 'Sucursal', 'C.E.I.S.A.', 'Coaseguro', 'Empresa de Acciones Simplificada', 'Empresa sin fines de lucro', 'Asociación']
-
+values_map = ['Persona Física - Bienes y Servicios', 'Persona Física - Servicios Personales', 'S.A.', 'S.R.L.', 'S.A.C.I.', 'S.A.E.C.A.', 'Consorcio', 'Otros', 'S.A.I.C.', 'S.A.C.', 'Sociedad Simple', 'S.A.E.', 'C.I.S.A.', 'Sociedad Civil', 'E.I.R.L.', 'Cooperativas', 'Extranjeras', 'Sucursal', 'C.E.I.S.A.', 'Coaseguro', 'Empresa de Acciones Simplificada', 'Empresa sin fines de lucro', 'Asociación', 'S.A.C.I.G.']
 roles = ['candidate','enquirer','payer', 'payee', 'supplier', 'procuringEntity', 'buyer', 'tenderer', 'notifiedSupplier']
 
 def process_row (row: tuple, colNumber: int) -> str:
     # vector inicializado con ceros
-    count_array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    count_array = [0] * len(values_map)
     return_string = ""
 
     if row[colNumber]:
@@ -25,7 +24,7 @@ def process_row (row: tuple, colNumber: int) -> str:
                                 count_array[values_map.index(detail['legalEntityTypeDetail'])] += 1    
             # cada llamado diferente será una fila y cada rol diferente en el llamado es una columna de esa fila
             return_string += ";;;".join(map(str, count_array)) + ";;;"
-            count_array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            count_array = [0] * len(values_map)
     else:
         for rol in roles:
             return_string += "{};;;".format(";;;0"*len(count_array))
