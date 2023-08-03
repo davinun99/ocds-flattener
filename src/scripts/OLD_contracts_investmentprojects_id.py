@@ -2,7 +2,39 @@ import sys
 sys.path.append('./src')
 import helpers
 BATCH_SIZE = 1000
-
+# 138
+# 139
+# 284
+# 6
+# 235
+# 106
+# 95
+# 14
+# 7
+# 22
+# 44
+# 63
+# 104
+# 44
+# 9
+# 101
+# 118
+# 134
+# 63
+# 736
+# 121
+# 61
+# 99
+# 156
+# 128
+# 102
+# 152
+# 113
+# 136
+# 25
+# 145
+# 78
+# 136
 map_data = {
 	"769": 0,
 	"109": 1,
@@ -179,6 +211,33 @@ map_data = {
 	"311": 172,
 	"100": 173,
 	"557": 174,
+	"1": 175,
+	"12": 176,
+	"137": 177,
+	"51": 178,
+	"17": 179,
+	"105": 180,
+	"119": 181,
+	"74": 182,
+	"108": 183,
+	"11": 184,
+	"81": 185,
+	"41": 186,
+	"115": 187,
+	"141": 188,
+	"158": 189,
+	"42": 190,
+	"57": 191,
+	"62": 192,
+	"77": 193,
+	"21": 194,
+	"46": 195,
+	"117": 196,
+	"54": 197,
+	"3": 198,
+	"16": 199,
+	"65": 199,
+	"107": 199,
 }
 
 def process_row (row: tuple, colNumber: int):
@@ -186,9 +245,14 @@ def process_row (row: tuple, colNumber: int):
 	if row[colNumber]:
 		for contract in row[colNumber]:
 			if('investmentProjects' in contract):
-				for investmentProject in contract['investmentProjects']:
-					ind = map_data[investmentProject['id']]
-					countArr[ind] += 1
+				try:
+					for investmentProject in contract['investmentProjects']:
+						ind = map_data[investmentProject['id']]
+						countArr[ind] += 1
+				except Exception as e:
+					print('Exception:: ')
+					print(e)
+					print(e.__traceback__)
 	return ";;;".join(map(str, countArr))
 
 def main(arguments):
