@@ -64,7 +64,7 @@ class InvestmentProjectsId:
 			sys.stdout = sys.__stdout__ # Reset
 
 	def __init__(self, rows: list[tuple], colNumber: int):
-		self.colNumber = colNumber;
+		self.colNumber = colNumber
 		self.count_map = {}
 		self.first_quantile: dict = {}
 		self.second_quantile = {}
